@@ -28,7 +28,7 @@
 <meta property="og:description" content="種類 : string難度 : easy題目 : 09.Palindrome Number">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2024-06-22T02:19:58.000Z">
-<meta property="article:modified_time" content="2024-06-25T01:58:15.763Z">
+<meta property="article:modified_time" content="2024-06-25T07:04:50.809Z">
 <meta property="article:author" content="Muchian">
 <meta property="article:tag" content="LeetCode">
 <meta property="article:tag" content="python">
@@ -200,7 +200,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2024-06-25 09:58:15" itemprop="dateModified" datetime="2024-06-25T09:58:15+08:00">2024-06-25</time>
+      <time title="修改時間：2024-06-25 15:04:50" itemprop="dateModified" datetime="2024-06-25T15:04:50+08:00">2024-06-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -253,18 +253,7 @@
 <li>檢查中間數</li>
 <li>檢查前後是否回文</li>
 </ol>
-<h3 id="最佳解法"><a href="#最佳解法" class="headerlink" title="最佳解法"></a>最佳解法</h3><p>class Solution:<br>    def isPalindrome(self, x: int) -&gt; bool:<br>        if x &lt; 0:<br>            return False</p>
-<pre><code>    reversed_num = 0
-    temp = x
-
-    while temp != 0:
-        digit = temp % 10
-        reversed_num = reversed_num * 10 + digit
-        temp //= 10
-
-    return reversed_num == x
-</code></pre>
-
+<h3 id="最佳解法"><a href="#最佳解法" class="headerlink" title="最佳解法"></a>最佳解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">isPalindrome</span>(<span class="params">self, x: <span class="built_in">int</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="keyword">if</span> x &lt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        reversed_num = <span class="number">0</span></span><br><span class="line">        temp = x</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> temp != <span class="number">0</span>:</span><br><span class="line">            digit = temp % <span class="number">10</span></span><br><span class="line">            reversed_num = reversed_num * <span class="number">10</span> + digit</span><br><span class="line">            temp //= <span class="number">10</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> reversed_num == x</span><br></pre></td></tr></table></figure>
     </div>
 
     
