@@ -28,7 +28,7 @@
 <meta property="og:description" content="前言礙於面試時常被問「網路協定」，也惡補二專、碩班有聽沒有懂的網路知識，希望紀錄下來學以致用(避免下次再被問倒?)">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2024-07-12T06:06:51.000Z">
-<meta property="article:modified_time" content="2024-07-13T10:28:34.136Z">
+<meta property="article:modified_time" content="2024-07-14T14:06:06.884Z">
 <meta property="article:author" content="Muchian">
 <meta property="article:tag" content="internet">
 <meta name="twitter:card" content="summary">
@@ -126,17 +126,17 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">標籤</span>
       </div>
   </nav>
@@ -199,7 +199,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2024-07-13 18:28:34" itemprop="dateModified" datetime="2024-07-13T18:28:34+08:00">2024-07-13</time>
+      <time title="修改時間：2024-07-14 22:06:06" itemprop="dateModified" datetime="2024-07-14T22:06:06+08:00">2024-07-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -255,14 +255,14 @@
 <h3 id="代溝的嚴重性"><a href="#代溝的嚴重性" class="headerlink" title="代溝的嚴重性"></a>代溝的嚴重性</h3><p>雖然確定Server有收到訊息，但內容沒有統一的格式，導致傳訊息都看心情來寫、收訊息一團亂，沒有辦法非常直觀地找到需要的資訊。因此，我們需要說好使用哪一種協定、協定的規格是什麼？舉例來說，我向Server發送Request時特別指定使用「Http協定(80 port)」，並依照協定的規範撰寫訊息。</p>
 <blockquote class="imgur-embed-pub" lang="en" data-id="a/pMdOsnt"  ><a target="_blank" rel="noopener" href="//imgur.com/a/pMdOsnt">HTTP</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
 
-<p>在Http協定中，將內文區分header與body<br>Client to Server:<br>header包含action(請求動作)與IP(目標地址)，而body則包含其他東西<br>其中action大致可區分</p>
+<p>在Http協定中，將內文區分header與body<br>Client to Server:<br>header包含action(請求動作)與IP(目標地址)，而body則包含其他東西<br>其中action使用這些代表User向Server請求的動作</p>
 <ol>
 <li>GET: 取得資訊</li>
 <li>POST: 新增內容</li>
 <li>DELETE: 刪除內容</li>
 <li>PUT: 更新內容</li>
 </ol>
-<p>Server to Client:<br>header包含status(狀態)與IP(目標地址)，body則包含Client請求的內容<br>其中status大致可區分</p>
+<p>Server to Client:<br>header包含status(狀態)與IP(目標地址)，body則包含Client請求的內容<br>其中status使用這些數字代表Server回覆User的結果</p>
 <ol>
 <li>200 OK: 成功接收</li>
 <li>400 Error: Bad Requset錯誤請求(詳述錯誤內容)</li>
@@ -300,6 +300,9 @@ Appliction(應用層): 決定內容的格式，像是匯款單上的數字就一
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/Python/Flask/pythonFlask/flask-0/" rel="next" title="Python Flask 概念與實作 - 佈置環境">
+                  Python Flask 概念與實作 - 佈置環境 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
