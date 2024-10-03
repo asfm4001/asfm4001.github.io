@@ -20,28 +20,29 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"asfm4001.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="前言Git是目前軟體工程師幾乎必備的技能，礙於每次使用都忘記指令跟概念，這裡記錄目前所學的Git概念與指令！">
+    <meta name="description" content="前言在Flask中有需多實用的model，在之後的實作我們也會使用到，這小節會介紹許多model，若之後有使用到其他的model我盡量也會補充進來。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Git指令">
-<meta property="og:url" content="https://asfm4001.github.io/Git/git-command/index.html">
+<meta property="og:title" content="Python Flask 概念與實作 - Web server概念">
+<meta property="og:url" content="https://asfm4001.github.io/Python/Flask/mysql/flask-2/index.html">
 <meta property="og:site_name" content="MC">
-<meta property="og:description" content="前言Git是目前軟體工程師幾乎必備的技能，礙於每次使用都忘記指令跟概念，這裡記錄目前所學的Git概念與指令！">
+<meta property="og:description" content="前言在Flask中有需多實用的model，在之後的實作我們也會使用到，這小節會介紹許多model，若之後有使用到其他的model我盡量也會補充進來。">
 <meta property="og:locale" content="zh_TW">
-<meta property="article:published_time" content="2024-06-27T01:53:20.000Z">
-<meta property="article:modified_time" content="2024-07-12T06:05:06.771Z">
+<meta property="article:published_time" content="2024-10-03T02:46:30.000Z">
+<meta property="article:modified_time" content="2024-10-03T07:10:19.671Z">
 <meta property="article:author" content="Muchian">
-<meta property="article:tag" content="git">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="flask">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://asfm4001.github.io/Git/git-command/">
+<link rel="canonical" href="https://asfm4001.github.io/Python/Flask/mysql/flask-2/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/Git/git-command/","path":"Git/git-command/","title":"Git指令"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/Python/Flask/mysql/flask-2/","path":"Python/Flask/mysql/flask-2/","title":"Python Flask 概念與實作 - Web server概念"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Git指令 | MC</title>
+<title>Python Flask 概念與實作 - Web server概念 | MC</title>
   
 
 
@@ -113,7 +114,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">指令</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flask-model"><span class="nav-number">2.</span> <span class="nav-text">Flask model</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Debug"><span class="nav-number">2.1.</span> <span class="nav-text">Debug</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">3.</span> <span class="nav-text">結論</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -163,7 +164,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://asfm4001.github.io/Git/git-command/">
+    <link itemprop="mainEntityOfPage" href="https://asfm4001.github.io/Python/Flask/mysql/flask-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -176,12 +177,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Git指令 | MC">
+      <meta itemprop="name" content="Python Flask 概念與實作 - Web server概念 | MC">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Git指令
+          Python Flask 概念與實作 - Web server概念
         </h1>
 
         <div class="post-meta-container">
@@ -191,15 +192,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">發表於</span>
+      
 
-      <time title="創建時間：2024-06-27 09:53:20" itemprop="dateCreated datePublished" datetime="2024-06-27T09:53:20+08:00">2024-06-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2024-07-12 14:05:06" itemprop="dateModified" datetime="2024-07-12T14:05:06+08:00">2024-07-12</time>
+      <time title="創建時間：2024-10-03 10:46:30 / 修改時間：15:10:19" itemprop="dateCreated datePublished" datetime="2024-10-03T10:46:30+08:00">2024-10-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -207,7 +202,11 @@
       </span>
       <span class="post-meta-item-text">分類於</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a>
         </span>
     </span>
 
@@ -220,8 +219,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/Git/git-command/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Git/git-command/" itemprop="commentCount"></span>
+    <a title="disqus" href="/Python/Flask/mysql/flask-2/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Python/Flask/mysql/flask-2/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -234,34 +233,33 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Git是目前軟體工程師幾乎必備的技能，礙於每次使用都忘記指令跟概念，這裡記錄目前所學的Git概念與指令！</p>
+    <div class="post-body" itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在Flask中有需多實用的model，在之後的實作我們也會使用到，這小節會介紹許多model，若之後有使用到其他的model我盡量也會補充進來。</p>
 <span id="more"></span>
-<p>Git是一個分佈式的版本控制系統，</p>
-<h3 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h3><ul>
-<li>查詢git設定欓<br>  <code>git config --list</code></li>
-<li>初始化<br>  <code>git init</code></li>
-<li>檢查狀態<br>  <code>git status</code></li>
-<li>追蹤檔案<br>  <code>git add file_name</code></li>
-<li>刪除追蹤檔案(返回更改前狀態)<br>  <code>git checkout -- file_name</code></li>
-<li>提交檔案至待存區<br>  <code>git commit -m &quot;提交說明&quot;</code></li>
-<li>修改上一次提交備註<br>  <code>git commit --amend</code></li>
-<li>查詢過往提交(commit)紀錄<br>  <code>git log</code></li>
-</ul>
+
 <hr>
-<ul>
-<li>將待存區上傳至雲端<br>  <code>git push ssh://example.com/~/www/project.git</code></li>
-<li>下載檔案<br>  <code>git clone ssh://example.com/~/www/project.git</code></li>
-<li>下載更新<br>  <code>git pull</code></li>
-<li>查看分歧狀態<br>  <code>git branch</code></li>
-<li>查看遠端分歧<br>  <code>git branch -r</code> or <code>git branch --remote</code> </li>
-<li>創建分歧(branch)<br>  <code>git branch branch_name</code></li>
-<li>切換分歧<br>  <code>git checkout branch_name</code></li>
-<li>合併分歧(merge)<ul>
-<li>在分歧中提交紀錄(commit)</li>
-<li>切回主要分歧 <code>git checkout master</code></li>
-<li>合併分歧 <code>git merge branch_name</code></li>
-</ul>
-</li>
+<p>目前 <em><strong>Python Flask 概念與實作</strong></em> 大致規劃為</p>
+<ol start="0">
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-0/">佈置環境</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-1/">Flask model運用</a></li>
+<li>Web server概念</li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-3/">專案檔案分佈</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-4/">建立Flask</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-5/">連接資料庫</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-6/">渲染模板</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-7/">登入功能</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-8/">Blog功能</a></li>
+</ol>
+<p>在開發過程中，Test(測試)其實也很重要，但礙於缺乏經驗，若之後有望的話再補上(專案打包、網站優化等等亦同)</p>
+<hr>
+<h3 id="Flask-model"><a href="#Flask-model" class="headerlink" title="Flask model"></a>Flask model</h3><p>在上一節<a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-0/">佈置環境</a>當中，我們建立一個<code>flask-tutorial</code>專案，在這節中我們會沿用這些檔案</p>
+<h4 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h4><p>礙於每次改程式時都要先重啟server實在太麻煩，因此我們在開發時會使用debug模式，當程式碼更改時會自動重新運行！</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flask --app helloFlask run --debug</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>Tips</strong><br>若是將<code>run</code>寫在檔內，也可開啟debug模式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># helloFlask.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"></span><br><span class="line">app = ...</span><br><span class="line"><span class="comment"># 省略</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#   若想指定port也在&quot;run&quot;中設定</span></span><br><span class="line"><span class="comment">#   app.run(debug=True, prot=4500)</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><ul>
+<li><input checked="" disabled="" type="checkbox"> 開啟Debug模式，方便隨時更改code</li>
 </ul>
 
     </div>
@@ -272,20 +270,21 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/git/" rel="tag"># git</a>
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/flask/" rel="tag"># flask</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/MySQL/mysql/mysql-command/" rel="prev" title="MySQL指令(新增、修改、刪除、查詢)">
-                  <i class="fa fa-chevron-left"></i> MySQL指令(新增、修改、刪除、查詢)
+                <a href="/Python/Flask/pythonFlask/flask-1/" rel="prev" title="Python Flask 概念與實作 - Flask model運用">
+                  <i class="fa fa-chevron-left"></i> Python Flask 概念與實作 - Flask model運用
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/Internet/internetProtocolSuite/" rel="next" title="Internet Protocol Suite(網路協定)">
-                  Internet Protocol Suite(網路協定) <i class="fa fa-chevron-right"></i>
+                <a href="/Python/Flask/pythonFlask/flask-bootstrap/" rel="next" title="Python Flask - 使用 Flask Bootstrap 渲染你的HTML">
+                  Python Flask - 使用 Flask Bootstrap 渲染你的HTML <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
