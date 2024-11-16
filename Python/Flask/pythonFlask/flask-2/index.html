@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"asfm4001.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言一個可以讓user訪問的Web server其不是單純一個遠端主機而已，還必須考量資料庫、server安全性等等的問題，本文。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python Flask 概念與實作(二) - Web server概念">
+<meta property="og:url" content="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-2/index.html">
+<meta property="og:site_name" content="MC">
+<meta property="og:description" content="前言一個可以讓user訪問的Web server其不是單純一個遠端主機而已，還必須考量資料庫、server安全性等等的問題，本文。">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2024-11-11T02:46:30.000Z">
+<meta property="article:modified_time" content="2024-11-16T02:06:00.519Z">
+<meta property="article:author" content="Muchian">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="flask">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/Python/Flask/pythonFlask/flask-2/","path":"Python/Flask/pythonFlask/flask-2/","title":"Python Flask 概念與實作(二) - Web server概念"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python Flask 概念與實作(二) - Web server概念 | MC</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MC</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2Server"><span class="nav-number">2.</span> <span class="nav-text">部署Server</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#App-Server"><span class="nav-number">2.1.</span> <span class="nav-text">App Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Web-Server"><span class="nav-number">2.2.</span> <span class="nav-text">Web Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reverse-Proxy-amp-Forward-Proxy"><span class="nav-number">2.3.</span> <span class="nav-text">Reverse Proxy &amp; Forward Proxy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Web-server-Load-Balance"><span class="nav-number">2.4.</span> <span class="nav-text">Web server(Load Balance)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">3.</span> <span class="nav-text">結論</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Muchian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">標籤</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Muchian">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python Flask 概念與實作(二) - Web server概念 | MC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python Flask 概念與實作(二) - Web server概念
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-11-11 10:46:30" itemprop="dateCreated datePublished" datetime="2024-11-11T10:46:30+08:00">2024-11-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2024-11-16 10:06:00" itemprop="dateModified" datetime="2024-11-16T10:06:00+08:00">2024-11-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/Python/Flask/pythonFlask/flask-2/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Python/Flask/pythonFlask/flask-2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>一個可以讓user訪問的Web server其不是單純一個遠端主機而已，還必須考量資料庫、server安全性等等的問題，本文。</p>
+<span id="more"></span>
+
+<hr>
+<p>目前 <em><strong>Python Flask 概念與實作</strong></em> 大致規劃為</p>
+<ol>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-0/">佈置環境</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-1/">Flask model運用(一)</a></li>
+<li>Web server概念(二)</li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-3/">專案檔案分佈(三)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-4/">建立Flask(四)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-5/">連接資料庫(五)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-6/">渲染模板(六)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-7/">登入功能(七)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-8/">Blog功能(八)</a></li>
+</ol>
+<p>在開發過程中，Test(測試)其實也很重要，但礙於缺乏經驗，若之後有望的話再補上(專案打包、網站優化等等亦同)</p>
+<hr>
+<h3 id="部署Server"><a href="#部署Server" class="headerlink" title="部署Server"></a>部署Server</h3><p>在上節<a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-1/">Flask model運用</a>時，我們搭建一個本地端的Server，但要真正部署一個「足夠安全」server仍遠遠不夠。<br>首先，大部分的網站都會有資料庫(database, DB)，而實際的狀況與我們開發時使用的SQLite不同的是：DB並不會與網站存在相同的Server主機當中。而是儲存在一個單獨的DB server並且只允許你的Flask(App server)來做存取的行為，倘若User想要存取DB server中的資料時，必須透過App server才能獲得資料。(App server可以控管User的存取行為)</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/GWY3Oad"  >
+    <a target="_blank" rel="noopener" href="//imgur.com/a/GWY3Oad">User and Server &amp; DB server</a>
+</blockquote>
+<script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
+<h4 id="App-Server"><a href="#App-Server" class="headerlink" title="App Server"></a>App Server</h4><p>然而，這種部署方式雖然可行，但仍存在一些問題：</p>
+<ol>
+<li>隨著網站規模變大，若有大量的請求(request)同時發送到App server時(無論是否為惡意攻擊)，Flask效能並不好，也不夠穩定(畢竟Flask也只是單進程)。</li>
+<li>User向Server發送的是HTTP request，在Python中是使用WSGI(Python Web Server GateWay Interface)協定操作HTTP request與response，雖然Flask內建WSGI server但效能僅僅只足夠開發使用。</li>
+</ol>
+<p>因此，我們需要一個專門的WSGI server部署Flask(App process)，而常見的Gunicorm(操作較簡單)或uWSGI(效能較佳)都是不錯的選擇，這裡我們選擇Gunicorm作為示範。</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/IrV5kdX">
+<a target="_blank" rel="noopener" href="//imgur.com/a/IrV5kdX">User and App Server &amp; DB server</a>
+</blockquote>
+<script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
+<p>Gunicorm是一個支援多進程與多線程的WSGI server，透過Gunicorm部署Flask，可以提升Server的效能。Flask可以更有效率的處理request(相較於Flask內建開發用的server)。</p>
+<h4 id="Web-Server"><a href="#Web-Server" class="headerlink" title="Web Server"></a>Web Server</h4><p>目前server的規劃已經滿足大致需求，並且是一個動態伺服器(Dynamic Server)，其功能是非常多元的，但仍有幾點是可以改善的：</p>
+<ol>
+<li>一部分的user單純只是存取靜態資源(e.g. 訪問網站)，App server雖然可以處理但仍造成其負擔。</li>
+<li>server的真實位置暴露在外容易被攻擊，其實user根本不在意後端到底是誰🤷🏻，只要滿足其需求即可。</li>
+<li>隨著網站擴大，主機的效能有可能無法負擔，增加App server的同時，也需要一個server統一對外。</li>
+</ol>
+<p>因此我們需要一台Web server來處理上述的缺點，常見的有Apache與Nginx(音同Engine X)，聽聞Nginx速度處理靜態資源較快且不處理動態資源，剛好Gunicorm已經勝任這份工作🤓，因此這裡以Nginx作為示範。</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/0EBosRA">
+    <a target="_blank" rel="noopener" href="//imgur.com/a/0EBosRA">User, Web server, App server and DB server</a>
+</blockquote>
+<script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
+<p>Nginx被設置在最外層，當User發送request時，Nginx(Web server)會先查看request，如果User的request是Web server端已經有的靜態資源，Nginx會直接返回respone，無需在向後傳遞，減少App server的負擔。反之，再傳送到Gunicorm(App server)。<br>這樣設置的優點是：</p>
+<ol>
+<li>隱藏App server的真實IP，避免受到攻擊。(反向代理)</li>
+<li>減少App server的負擔，加速User存取時間。</li>
+<li>隨著App server數量增加時，每一個App server性能或功能有可能不同，Nginx可以設定有效率的模式分配request給App server。</li>
+</ol>
+<h4 id="Reverse-Proxy-amp-Forward-Proxy"><a href="#Reverse-Proxy-amp-Forward-Proxy" class="headerlink" title="Reverse Proxy &amp; Forward Proxy"></a>Reverse Proxy &amp; Forward Proxy</h4><p>我們都知道網路當中存在許多node(節點)，每一個node都是一台主機。在網路的茫茫大海世界如何找到欲訪問的主機IP呢?這時Proxy server(代理伺服器)就非常重要，Proxy server會記錄底下所有node的IP，當request經過時，Proxy server會將你的request轉發到對應的IP。而你不需要知道中間到底經過了多少Proxy server就可以存取目標IP，這就是所謂的Forward Proxy(正向代理)。</p>
+<p>而User在發送request給server時，他的目標是存取資料，而不是server的位置。因此為了保護App server不受攻擊，通常會在最外層架設Web server，Web server會將request依照設定轉發到不同的App server，App server處理完後也會透過Web server再返回給User，如此User既不知道App server的真實位置也能存取資料，這就是Reverse Proxy(反向代理)。</p>
+<h4 id="Web-server-Load-Balance"><a href="#Web-server-Load-Balance" class="headerlink" title="Web server(Load Balance)"></a>Web server(Load Balance)</h4><blockquote>
+<p>我不能用用一台App server取代Web server的功用嗎?</p>
+</blockquote>
+<p>舉例來說，之前我們的部署將像是一個私廚(App server)處理每一個客人(User)的客製化的餐點(request)，但也是有很多人客人只是要一個簡易的微波食品(靜態資源)，如果你的前台服務生(Web server)可以快速處理並送餐(response)，就不會導致你的私廚要料理又要微波的窘境，且客人也能更快收到餐點。當然Flask也能處理，只是Nginx表現更好👍🏻</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/E1LBJlf">
+    <a target="_blank" rel="noopener" href="//imgur.com/a/E1LBJlf">Web server To many App server</a>
+</blockquote>
+<script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
+<p>如上述所說，當你的App server增加時，Nginx也能有效率的分配request給每一個App server(Load Balance)，一切取決於你的設定。Nginx分配App server模式可以設定成：</p>
+<ol>
+<li>round-robin(輪詢)：將request依序分配到App server，也是Nginx預設的模式。</li>
+<li>weight round-robin(權重)：將App server設定weight，設定越大則分配越多request。性能越強的App server可以適時提高weight來平衡。</li>
+<li>least-connected(最少連線)：分配request給當前最少連線的App server。</li>
+<li>IP-hash：將request的IP透過hash table紀錄在冊，讓相同IP再次發送request時連線到相同的App server。若App server有存取User的session(e.g. 儲存購物車)，可使用此模式讓User每次連到相同App server。</li>
+</ol>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><ul>
+<li><input checked="" disabled="" type="checkbox"> 使用Guicorm部署Flask，彌補Flask開發server效能不足。</li>
+<li><input checked="" disabled="" type="checkbox"> 瞭解WSGI server作用。</li>
+<li><input checked="" disabled="" type="checkbox"> Web server可以有效的分配request給App server。(Load Balance)</li>
+<li><input checked="" disabled="" type="checkbox"> Web server可以隱藏App server的位置(Reverse Proxy)</li>
+<li><input checked="" disabled="" type="checkbox"> 如何適當部署server。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/flask/" rel="tag"># flask</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Python/Flask/pythonFlask/flask-wtf/" rel="prev" title="Python Flask - 使用 WTForm 快速建立表單 feet. flask檔案佈局 & bootstrap">
+                  <i class="fa fa-chevron-left"></i> Python Flask - 使用 WTForm 快速建立表單 feet. flask檔案佈局 & bootstrap
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Muchian</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"mcdaily","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
