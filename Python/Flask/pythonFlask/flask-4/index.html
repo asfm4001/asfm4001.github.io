@@ -22,7 +22,7 @@
 
     <meta name="description" content="前言Flask內建的SQLite用作開發非常方便，但在較大型的專案中則相對來說效能較低，而Flask也支援連接其他種類的資料庫。MySQL是一個常見的資料庫管理系統，搭配docker可以更快的建立我們的DB server。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python Flask 概念與實作(四) - Flask model運用">
+<meta property="og:title" content="Python Flask 概念與實作(四) - 連接資料庫">
 <meta property="og:url" content="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-4/">
 <meta property="og:site_name" content="MC">
 <meta property="og:description" content="前言Flask內建的SQLite用作開發非常方便，但在較大型的專案中則相對來說效能較低，而Flask也支援連接其他種類的資料庫。MySQL是一個常見的資料庫管理系統，搭配docker可以更快的建立我們的DB server。">
@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-4/mysql1.png">
 <meta property="og:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-4/mysql2.png">
 <meta property="article:published_time" content="2024-12-03T02:57:33.000Z">
-<meta property="article:modified_time" content="2024-12-03T07:17:07.710Z">
+<meta property="article:modified_time" content="2024-12-23T05:59:22.257Z">
 <meta property="article:author" content="Muchian">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="flask">
@@ -47,10 +47,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/Python/Flask/pythonFlask/flask-4/","path":"Python/Flask/pythonFlask/flask-4/","title":"Python Flask 概念與實作(四) - Flask model運用"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/Python/Flask/pythonFlask/flask-4/","path":"Python/Flask/pythonFlask/flask-4/","title":"Python Flask 概念與實作(四) - 連接資料庫"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Python Flask 概念與實作(四) - Flask model運用 | MC</title>
+<title>Python Flask 概念與實作(四) - 連接資料庫 | MC</title>
   
 
 
@@ -135,7 +135,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -194,12 +194,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Python Flask 概念與實作(四) - Flask model運用 | MC">
+      <meta itemprop="name" content="Python Flask 概念與實作(四) - 連接資料庫 | MC">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Python Flask 概念與實作(四) - Flask model運用
+          Python Flask 概念與實作(四) - 連接資料庫
         </h1>
 
         <div class="post-meta-container">
@@ -209,9 +209,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">發表於</span>
-      
 
-      <time title="創建時間：2024-12-03 10:57:33 / 修改時間：15:17:07" itemprop="dateCreated datePublished" datetime="2024-12-03T10:57:33+08:00">2024-12-03</time>
+      <time title="創建時間：2024-12-03 10:57:33" itemprop="dateCreated datePublished" datetime="2024-12-03T10:57:33+08:00">2024-12-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2024-12-23 13:59:22" itemprop="dateModified" datetime="2024-12-23T13:59:22+08:00">2024-12-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -386,6 +392,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/Python/Flask/pythonFlask/flask-3/" rel="next" title="Python Flask 概念與實作(三) - 專案檔案分佈">
+                  Python Flask 概念與實作(三) - 專案檔案分佈 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -411,7 +420,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -423,7 +432,7 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>總字數：</span>
-    <span title="總字數">17k</span>
+    <span title="總字數">18k</span>
   </span>
 </div>
 
