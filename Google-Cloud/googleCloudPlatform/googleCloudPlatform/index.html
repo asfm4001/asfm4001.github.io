@@ -39,11 +39,11 @@
 <meta property="og:image" content="https://asfm4001.github.io/imgs/googleCloudPlatform/systemctl_status.png">
 <meta property="og:image" content="https://asfm4001.github.io/imgs/googleCloudPlatform/shijuu.png">
 <meta property="article:published_time" content="2025-02-24T02:42:12.000Z">
-<meta property="article:modified_time" content="2025-03-03T03:37:42.050Z">
+<meta property="article:modified_time" content="2025-03-04T09:28:26.091Z">
 <meta property="article:author" content="Muchian">
+<meta property="article:tag" content="gcp">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="flask">
-<meta property="article:tag" content="gcp">
 <meta property="article:tag" content="systemctl">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://asfm4001.github.io/imgs/googleCloudPlatform/googleCloudPage.png">
@@ -128,7 +128,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Google-Cloud-Platform"><span class="nav-number">2.</span> <span class="nav-text">Google Cloud Platform</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Google-Cloud-Platform-GCP"><span class="nav-number">2.1.</span> <span class="nav-text">Google Cloud Platform, GCP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-Setting"><span class="nav-number">2.2.</span> <span class="nav-text">Linux Setting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Clone-Project"><span class="nav-number">2.3.</span> <span class="nav-text">Clone Project</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx-Setting"><span class="nav-number">2.4.</span> <span class="nav-text">Nginx Setting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Systemctl"><span class="nav-number">2.5.</span> <span class="nav-text">Systemctl</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Test"><span class="nav-number">2.5.1.</span> <span class="nav-text">Test</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#reload-amp-restart"><span class="nav-number">2.5.2.</span> <span class="nav-text">reload &amp; restart</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">4.</span> <span class="nav-text">結論</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Google-Cloud-Platform"><span class="nav-number">2.</span> <span class="nav-text">Google Cloud Platform</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Google-Cloud-Platform-GCP"><span class="nav-number">2.1.</span> <span class="nav-text">Google Cloud Platform, GCP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-Setting"><span class="nav-number">2.2.</span> <span class="nav-text">Linux Setting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Clone-Project"><span class="nav-number">2.3.</span> <span class="nav-text">Clone Project</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx-Setting"><span class="nav-number">2.4.</span> <span class="nav-text">Nginx Setting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Systemctl"><span class="nav-number">2.5.</span> <span class="nav-text">Systemctl</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Test"><span class="nav-number">2.5.1.</span> <span class="nav-text">Test</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#reload-amp-restart"><span class="nav-number">2.5.2.</span> <span class="nav-text">reload &amp; restart</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">3.</span> <span class="nav-text">結論</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Reference"><span class="nav-number">3.1.</span> <span class="nav-text">Reference</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -141,17 +141,17 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">標籤</span>
       </div>
   </nav>
@@ -223,7 +223,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2025-03-03 11:37:42" itemprop="dateModified" datetime="2025-03-03T11:37:42+08:00">2025-03-03</time>
+      <time title="修改時間：2025-03-04 17:28:26" itemprop="dateModified" datetime="2025-03-04T17:28:26+08:00">2025-03-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -305,16 +305,16 @@
 <p>網路介面更改<code>外部IPv4位址</code>，點選保留靜態外部IP位置，設定完名稱就可以按<code>建立</code><br><img src="/imgs/googleCloudPlatform/createVM_5.png" width="70%"></p>
 <p>顯示✅代表正在運行中(沒使用記得關掉)，若沒有設定靜態外部IP，則External IP會隨機跳(麻煩😣)<br><img src="/imgs/googleCloudPlatform/createVM_6.png"></p>
 <blockquote>
-<p>Notice: 我們會在<strong>2.4 Nginx Setting</strong>步驟使用到<strong>Internal IP</strong> &amp; <strong>External IP</strong></p>
+<p>Notice: 我們會在<a href="https://asfm4001.github.io/Google-Cloud/googleCloudPlatform/googleCloudPlatform/#Nginx-Setting">2.4 Nginx Setting</a>步驟使用到<strong>Internal IP</strong> &amp; <strong>External IP</strong></p>
 </blockquote>
 <p>點選ssh並授權即可使用google cloud GLI<br><img src="/imgs/googleCloudPlatform/createVM_7.png" width="95%"></p>
-<p>若有想用本地端terminal使用ssh至GCP，請參閱<a href="">如何ssh至cloud server(GCP)?</a></p>
+<p>若有想用本地端terminal使用ssh至GCP，請參閱<a href="https://asfm4001.github.io/Linux/linux/linux-ssh/">如何ssh至cloud server(GCP)?</a></p>
 <h4 id="Linux-Setting"><a href="#Linux-Setting" class="headerlink" title="Linux Setting"></a>Linux Setting</h4><p>若在建立GCE時選擇預設的映像檔<code>Debian GNU/Linux 12</code>則已經安裝python3，僅需更新及安裝vevn &amp; git 即可</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">update</span></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">install venv</span></span><br><span class="line">sudo apt-get install python3-venv</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">install git</span></span><br><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
 <h4 id="Clone-Project"><a href="#Clone-Project" class="headerlink" title="Clone Project"></a>Clone Project</h4><p>若你有自己的flask專案也可使用，而在這裡我做了一個甜點訂餐網站<a target="_blank" rel="noopener" href="https://github.com/asfm4001/shijuu">Shijuu 西啾</a>，有興趣的可以去看看。這個網站因為有許多這次不會使用到的功能，因此只列出相對重要的檔案，架構大致如下: </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">shihuu大致的架構</span></span><br><span class="line">.</span><br><span class="line">├── .gitignore</span><br><span class="line">├── README.md</span><br><span class="line">├── compose.yaml</span><br><span class="line">├── flask</span><br><span class="line">│   ├── requirements.txt    # 此專案會使用到的所有python套件</span><br><span class="line">│   ├── run.py              # 開發, 測試用</span><br><span class="line">│   ├── wsgi.py             # 正式部署用</span><br><span class="line">│   └── /instance</span><br><span class="line">│   └── /app</span><br><span class="line">└── /nginx</span><br></pre></td></tr></table></figure>
 
-<p>然而，如果還沒自己的網站也可以使用簡易的flask，建立一個wsgi.py即可。</p>
+<p>然而，如果還沒自己的網站也可以使用簡易的flask，建立一個<code>wsgi.py</code>即可。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># wsgi.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;&lt;p&gt;This is Home page.&lt;/p&gt;&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>Clone至Linux &amp; Deploy virtual environment</p>
@@ -326,7 +326,7 @@
 <p><code>flask</code>如下，server_name為<code>對外IP</code>、proxy_pass為<code>對內IP:flask開放埠號</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">/etc/nginx/sites-available/flask</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">server_name [External IP]</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">proxy_pass http://[Internal IP]</span></span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name 111.222.333.444;</span><br><span class="line">	location / &#123;</span><br><span class="line">		proxy_pass http://555.666.777.888:5000;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>Notice: Internal IP &amp; External IP 請參見<strong>2.1 Google Cloud Platform, GCP</strong></p>
+<p>Notice: Internal IP &amp; External IP 請參見 <a href="https://asfm4001.github.io/Google-Cloud/googleCloudPlatform/googleCloudPlatform/#Google-Cloud-Platform-GCP">2.1 Google Cloud Platform, GCP</a></p>
 </blockquote>
 <h4 id="Systemctl"><a href="#Systemctl" class="headerlink" title="Systemctl"></a>Systemctl</h4><p>Systemctl是Liunx負責管理各項服務的工具，以下我們將會建立一個新的服務</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">navigate to systemd directory and create new service file.</span></span><br><span class="line">cd /etc/systemd/system</span><br><span class="line"></span><br><span class="line">vim shijuu.service</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">enable</span> and start service</span></span><br><span class="line">sudo systemctl enable shijuu        # 設定為預設開啟</span><br><span class="line">sudo systemctl start shijuu</span><br></pre></td></tr></table></figure>
@@ -341,15 +341,15 @@
 <h5 id="reload-amp-restart"><a href="#reload-amp-restart" class="headerlink" title="reload &amp; restart"></a>reload &amp; restart</h5><p>若專案中的python有異動時，Linux並不會主動更新，必須執行以下指令</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload    # 重新載入設定</span><br><span class="line">sudo systemctl restart shijuu   # 重啟shijuu service</span><br></pre></td></tr></table></figure>
 
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://ikala.cloud/blog/infrastructure/gce-static-ip-address">[手把手教學] 為 Google Cloud VM (GCE) 設定靜態 IP 位址</a></li>
-<li><a target="_blank" rel="noopener" href="https://alex-volkov.medium.com/how-to-deploy-flask-on-google-cloud-gcp-compute-engine-with-gunicorn-nginx-systemd-96da1f32a11a">How to deploy Flask on Google Cloud GCP Compute Engine with Gunicorn + Nginx + systemd</a></li>
-</ul>
 <h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><ul>
 <li><input checked="" disabled="" type="checkbox"> 使用Google Cloud的Google Compute Engine(GCE)服務</li>
 <li><input checked="" disabled="" type="checkbox"> 使用Nginx實現Reverse Proxy</li>
 <li><input checked="" disabled="" type="checkbox"> 使用systemctl 部署、重啟Linux service</li>
 <li><input checked="" disabled="" type="checkbox"> 在GCP部署Flask framework</li>
+</ul>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://ikala.cloud/blog/infrastructure/gce-static-ip-address">[手把手教學] 為 Google Cloud VM (GCE) 設定靜態 IP 位址</a></li>
+<li><a target="_blank" rel="noopener" href="https://alex-volkov.medium.com/how-to-deploy-flask-on-google-cloud-gcp-compute-engine-with-gunicorn-nginx-systemd-96da1f32a11a">How to deploy Flask on Google Cloud GCP Compute Engine with Gunicorn + Nginx + systemd</a></li>
 </ul>
 
     </div>
@@ -360,9 +360,9 @@
 
     <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/gcp/" rel="tag"># gcp</a>
               <a href="/tags/python/" rel="tag"># python</a>
               <a href="/tags/flask/" rel="tag"># flask</a>
-              <a href="/tags/gcp/" rel="tag"># gcp</a>
               <a href="/tags/systemctl/" rel="tag"># systemctl</a>
           </div>
 
@@ -370,11 +370,14 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/Python/Flask/pythonFlask/flask-3/" rel="prev" title="Python Flask 概念與實作(三) - 專案檔案分佈">
-                  <i class="fa fa-chevron-left"></i> Python Flask 概念與實作(三) - 專案檔案分佈
+                <a href="/Python/Flask/pythonFlask/flask-5/" rel="prev" title="Python Flask 概念與實作(五) - 渲染模板">
+                  <i class="fa fa-chevron-left"></i> Python Flask 概念與實作(五) - 渲染模板
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/Linux/linux/linux-ssh/" rel="next" title="如何ssh至Cloud Server(GCP)?">
+                  如何ssh至Cloud Server(GCP)? <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -412,7 +415,7 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>總字數：</span>
-    <span title="總字數">21k</span>
+    <span title="總字數">22k</span>
   </span>
 </div>
 
