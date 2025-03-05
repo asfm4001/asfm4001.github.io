@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-bootstrap/register_page.png">
 <meta property="og:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-bootstrap/login_page.png">
 <meta property="article:published_time" content="2024-10-03T04:32:17.000Z">
-<meta property="article:modified_time" content="2025-02-12T07:37:43.733Z">
+<meta property="article:modified_time" content="2025-03-05T01:37:48.282Z">
 <meta property="article:author" content="Muchian">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="flask">
@@ -121,7 +121,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8flask-bootstrap"><span class="nav-number">2.</span> <span class="nav-text">安裝與使用flask-bootstrap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8bootstrap-template"><span class="nav-number">3.</span> <span class="nav-text">使用bootstrap template</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Blueprint"><span class="nav-number">4.</span> <span class="nav-text">Blueprint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">5.</span> <span class="nav-text">結論</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8flask-bootstrap-bootstrap-flask"><span class="nav-number">2.</span> <span class="nav-text">安裝與使用flask-bootstrap bootstrap-flask</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8bootstrap-template"><span class="nav-number">3.</span> <span class="nav-text">使用bootstrap template</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Blueprint"><span class="nav-number">4.</span> <span class="nav-text">Blueprint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">5.</span> <span class="nav-text">結論</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -216,7 +216,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2025-02-12 15:37:43" itemprop="dateModified" datetime="2025-02-12T15:37:43+08:00">2025-02-12</time>
+      <time title="修改時間：2025-03-05 09:37:48" itemprop="dateModified" datetime="2025-03-05T09:37:48+08:00">2025-03-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -265,11 +265,11 @@
     <div class="post-body" itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>如果你略懂 HTML &amp; CSS 並且有在關注網站架設，應該對Bootstrap並不陌生。Bootstrap讓你可以快速套用現成的模板，減少開發的時間(<del>解決不堪的美感</del>)，其實在flask當中使用flask-bootstrap這個套件就可以在你的html中使用Bootstrap的模板</p>
 <span id="more"></span>
 
-<h3 id="安裝與使用flask-bootstrap"><a href="#安裝與使用flask-bootstrap" class="headerlink" title="安裝與使用flask-bootstrap"></a>安裝與使用flask-bootstrap</h3><ol>
+<h3 id="安裝與使用flask-bootstrap-bootstrap-flask"><a href="#安裝與使用flask-bootstrap-bootstrap-flask" class="headerlink" title="安裝與使用flask-bootstrap bootstrap-flask"></a>安裝與使用<del>flask-bootstrap</del> bootstrap-flask</h3><ol>
 <li><p>安裝<del>flask-bootstrap</del> bootstrap-flask<br>  (2025.02.07. <em>原flask-bootstrap僅支援到bootstrap V3.8, 改使用bootstrap-flask</em>)</p>
   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">僅支援bootstrap V3.8</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">pip install flask-bootstrap</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">支援bootstrap V4, V5</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">p.s. 若已經安裝過flask-bootstrap需先解除安裝再安裝bootstrap-flask</span></span><br><span class="line">pip install bootstrap-flask</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>引入flask-bootstrap並實體化</p>
+<li><p>引入<del>flask-bootstrap</del> bootstrap-flask並實體化</p>
   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> render_template       <span class="comment"># flask會在/templates中返回對應的html模板</span></span><br><span class="line"><span class="comment"># from flask_bootstrap import Bootstrap # flask-bootstrap 僅支援到 V3.8</span></span><br><span class="line"><span class="keyword">from</span> flask_bootstrap <span class="keyword">import</span> Bootstrap4  <span class="comment"># bootstrap-flask 依版本選擇V4 or V5</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 實體化bootstrap</span></span><br><span class="line">bootstrap = Bootstrap4(app)             <span class="comment"># 使用bootstrap 4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># routes(路由, 亦是子網址)</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/index&quot;</span>, method=[<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;index.html&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ = <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">  app.run(debug=<span class="string">&quot;True&quot;</span>)</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>建立一個templates資料夾，並在其中新增<code>index.html</code>，引入bootstrap後就可以使用各種模板(這裡使用navbar模板)</p>
@@ -312,7 +312,7 @@
 <h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><ul>
 <li><input checked="" disabled="" type="checkbox"> 使用bootstrap模板渲染html</li>
 <li><input checked="" disabled="" type="checkbox"> ⚠️ flask-bootstrap目前僅支援到bootstrap v3.3.7 ⚠️ (最新v.5.5.3)</li>
-<li><input checked="" disabled="" type="checkbox"> 💡 修改flask-bootstrap無法兼容bootstrap V4與V5問題，改使用bootstrap-flask套件 <em>2025.02.07</em></li>
+<li><input checked="" disabled="" type="checkbox"> 💡 修改flask-bootstrap無法兼容bootstrap V4 &amp; V5問題，改使用bootstrap-flask套件 <em>2025.02.07</em></li>
 <li><input checked="" disabled="" type="checkbox"> 使用bootstrap template <em>2025.02.12</em></li>
 <li><input checked="" disabled="" type="checkbox"> blueprint下渲染html <em>2025.02.12</em></li>
 </ul>
@@ -379,7 +379,7 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>總字數：</span>
-    <span title="總字數">22k</span>
+    <span title="總字數">23k</span>
   </span>
 </div>
 
