@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://asfm4001.github.io/imgs/googleCloudPlatform/systemctl_status.png">
 <meta property="og:image" content="https://asfm4001.github.io/imgs/googleCloudPlatform/shijuu.png">
 <meta property="article:published_time" content="2025-02-24T02:42:12.000Z">
-<meta property="article:modified_time" content="2025-03-04T09:28:26.091Z">
+<meta property="article:modified_time" content="2025-03-31T09:09:55.354Z">
 <meta property="article:author" content="Muchian">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="flask">
@@ -141,13 +141,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -223,7 +223,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2025-03-04 17:28:26" itemprop="dateModified" datetime="2025-03-04T17:28:26+08:00">2025-03-04</time>
+      <time title="修改時間：2025-03-31 17:09:55" itemprop="dateModified" datetime="2025-03-31T17:09:55+08:00">2025-03-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -321,7 +321,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Linux的網站服務通常會部署在/srv或/opt下</span></span><br><span class="line">cd /srv</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">部署專案並建立虛擬環境</span></span><br><span class="line">sudo git clone https://github.com/asfm4001/shijuu.git</span><br><span class="line">cd /srv/shijuu/flask</span><br><span class="line">sudo python3 -m venv .vnev  # create virtual environment</span><br><span class="line">suorce .venv/bin/activate   # activate virtual environment, 此時username前會多前綴(.venv)</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安裝相關套件</span></span><br><span class="line">sudo /srv/shijuu/flask/.venv/bin/pip install -r requirements.txt</span><br><span class="line">    # 使用sudo pip install -r requirements.txt 會報錯誤, 因Linux本身無安裝pip</span><br><span class="line">    # 若無專案僅需安裝 flask, gunicorn即可</span><br><span class="line">    # sudo /srv/your_project/.venv/bin/pip install Flask, gunicorn</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">退出虛擬環境</span></span><br><span class="line">deactivate                  # deactivate virtual environment, 此時username前綴會消失</span><br></pre></td></tr></table></figure>
 
 <h4 id="Nginx-Setting"><a href="#Nginx-Setting" class="headerlink" title="Nginx Setting"></a>Nginx Setting</h4><p>Nginx是常用作Reverse Proxy(反向代理)的web server，效能相較於Apache更好(聽說?)，我們透過Nginx將External IP : 80 port轉接到Internal IP : 5000 port</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">install Nginx</span></span><br><span class="line">sudo apt-get nginx      # 切記!!必須退出虛擬環境</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">routing configuration folder</span></span><br><span class="line">cd /etc/nginx/sites-available/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">create new site to route</span></span><br><span class="line">sudo vim shijuu</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在Nginx中新增預設服務(Flask)</span></span><br><span class="line">cd /etc/nginx/sites-enabled</span><br><span class="line">sudo ln -s /etc/nginx/sites-available/shijuu</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">restart Nginx</span></span><br><span class="line">sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">install Nginx</span></span><br><span class="line">sudo apt-get install nginx      # 切記!!必須退出虛擬環境</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">routing configuration folder</span></span><br><span class="line">cd /etc/nginx/sites-available/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">create new site to route</span></span><br><span class="line">sudo vim shijuu</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在Nginx中新增預設服務(Flask)</span></span><br><span class="line">cd /etc/nginx/sites-enabled</span><br><span class="line">sudo ln -s /etc/nginx/sites-available/shijuu</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">restart Nginx</span></span><br><span class="line">sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
 
 <p><code>flask</code>如下，server_name為<code>對外IP</code>、proxy_pass為<code>對內IP:flask開放埠號</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">/etc/nginx/sites-available/flask</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">server_name [External IP]</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">proxy_pass http://[Internal IP]</span></span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name 111.222.333.444;</span><br><span class="line">	location / &#123;</span><br><span class="line">		proxy_pass http://555.666.777.888:5000;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -415,7 +415,7 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>總字數：</span>
-    <span title="總字數">23k</span>
+    <span title="總字數">24k</span>
   </span>
 </div>
 
