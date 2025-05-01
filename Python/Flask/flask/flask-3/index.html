@@ -23,23 +23,23 @@
     <meta name="description" content="前言專案檔案的部署這一節，原本想說不就是檔案按種類區分就好?殊不知這其中細節水很深，搞得死去活來。最後也做了好很多功課，甚至有想把現有專案砍掉重來的念頭。但後來發現若只是單純重新建新專案只是照本宣科，何不試著修改當前的專案🙄?關於這節，若你的網站只是單純blog、少許頁面或API等少量功能可以走馬看花略過，但如果是有意擴大網站的話，要特別注意檔案分佈的問題👻！">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python Flask 概念與實作(三) - 專案檔案分佈">
-<meta property="og:url" content="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-3/">
+<meta property="og:url" content="https://asfm4001.github.io/Python/Flask/flask/flask-3/">
 <meta property="og:site_name" content="MC">
 <meta property="og:description" content="前言專案檔案的部署這一節，原本想說不就是檔案按種類區分就好?殊不知這其中細節水很深，搞得死去活來。最後也做了好很多功課，甚至有想把現有專案砍掉重來的念頭。但後來發現若只是單純重新建新專案只是照本宣科，何不試著修改當前的專案🙄?關於這節，若你的網站只是單純blog、少許頁面或API等少量功能可以走馬看花略過，但如果是有意擴大網站的話，要特別注意檔案分佈的問題👻！">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2024-12-23T06:03:54.000Z">
-<meta property="article:modified_time" content="2025-02-12T06:39:06.867Z">
+<meta property="article:modified_time" content="2025-04-25T04:04:50.971Z">
 <meta property="article:author" content="Muchian">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="flask">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-3/">
+<link rel="canonical" href="https://asfm4001.github.io/Python/Flask/flask/flask-3/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/Python/Flask/pythonFlask/flask-3/","path":"Python/Flask/pythonFlask/flask-3/","title":"Python Flask 概念與實作(三) - 專案檔案分佈"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/Python/Flask/flask/flask-3/","path":"Python/Flask/flask/flask-3/","title":"Python Flask 概念與實作(三) - 專案檔案分佈"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>Python Flask 概念與實作(三) - 專案檔案分佈 | MC</title>
@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -173,7 +173,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-3/">
+    <link itemprop="mainEntityOfPage" href="https://asfm4001.github.io/Python/Flask/flask/flask-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -209,7 +209,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2025-02-12 14:39:06" itemprop="dateModified" datetime="2025-02-12T14:39:06+08:00">2025-02-12</time>
+      <time title="修改時間：2025-04-25 12:04:50" itemprop="dateModified" datetime="2025-04-25T12:04:50+08:00">2025-04-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -234,8 +234,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/Python/Flask/pythonFlask/flask-3/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Python/Flask/pythonFlask/flask-3/" itemprop="commentCount"></span>
+    <a title="disqus" href="/Python/Flask/flask/flask-3/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Python/Flask/flask/flask-3/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -303,7 +303,7 @@
 <p>經過上述修改後，當前專案架構:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── requirements.txt</span><br><span class="line">├── run.py</span><br><span class="line">├── config.py</span><br><span class="line">├── .venv</span><br><span class="line">├── app</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── routes.py </span><br><span class="line">│   ├── models.py       </span><br><span class="line">│   ├── forms.py        </span><br><span class="line">│   ├── static</span><br><span class="line">│   └── templates       </span><br><span class="line">│       ├── base.html</span><br><span class="line">│       ├── footer.html</span><br><span class="line">│       ├── navbar.html</span><br><span class="line">│       ├── index.html</span><br><span class="line">│       └── about.html</span><br><span class="line">├── users</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── routes.py           # blueprint URL </span><br><span class="line">│   └── templates</span><br><span class="line">│       ├── register.html   # 註冊頁面</span><br><span class="line">│       └── signin.html     # 登入頁面</span><br><span class="line">└── instance</span><br><span class="line">    ├── devp-data.sqlite</span><br><span class="line">    └── test-data.sqlite</span><br></pre></td></tr></table></figure>
 <p>藉由使用blueprint即可解決小型專案遇到的1~3問題🥳</p>
-<h3 id="Application-Factory-vs-Blueprint"><a href="#Application-Factory-vs-Blueprint" class="headerlink" title="Application Factory vs. Blueprint"></a>Application Factory vs. Blueprint</h3><p>起初以為Factory與Blueprint都是管理大型專案的一種方法，但後來實作後赫然驚覺各自的功能根本不太一樣。Factory是讓開發人員可以快速切換database與<code>config.py</code>設定，而Blueprint是將大型專案功能逐一模組化。</p>
+<h3 id="Application-Factory-vs-Blueprint"><a href="#Application-Factory-vs-Blueprint" class="headerlink" title="Application Factory vs. Blueprint"></a>Application Factory vs. Blueprint</h3><p>起初以為Factory與Blueprint都是管理大型專案的一種方法，但後來實作後赫然驚覺各自的功能根本不一樣。Factory是讓開發人員可以快速切換database與<code>config.py</code>設定，而Blueprint是將大型專案功能逐一模組化。</p>
 <h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><ul>
 <li><input checked="" disabled="" type="checkbox"> 使用Application Factory(工廠模式)快速切換DB與設定</li>
 <li><input checked="" disabled="" type="checkbox"> 使用Blueprint(藍圖)管理大型專案</li>
@@ -325,12 +325,12 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/Python/Flask/pythonFlask/flask-4/" rel="prev" title="Python Flask 概念與實作(四) - 連接資料庫">
+                <a href="/Python/Flask/flask/flask-4/" rel="prev" title="Python Flask 概念與實作(四) - 連接資料庫">
                   <i class="fa fa-chevron-left"></i> Python Flask 概念與實作(四) - 連接資料庫
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/Python/Flask/pythonFlask/flask-5/" rel="next" title="Python Flask 概念與實作(五) - 渲染模板">
+                <a href="/Python/Flask/flask/flask-5/" rel="next" title="Python Flask 概念與實作(五) - 渲染模板">
                   Python Flask 概念與實作(五) - 渲染模板 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
@@ -370,7 +370,7 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>總字數：</span>
-    <span title="總字數">24k</span>
+    <span title="總字數">26k</span>
   </span>
 </div>
 
