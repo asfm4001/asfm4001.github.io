@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"asfm4001.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言在網站中常常用到各式各樣的表單(e.g. 註冊、登入、留言等)，然而每次都要重寫表單實在太麻煩，flask提供flask-wtform套件幫助我們快速建立表單。但單純的表單是沒有辦法滿足我虛榮的內心🤷🏻，剛好bootstrap也支援wtform，我們利用bootstrap美化我們的表單。而隨著我們專案變得更大，檔案與code也變得更多更複雜，我們在import檔案時也遇到的一點狀況，為此也">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python Flask - 使用 WTForm 快速建立表單 feet. flask檔案佈局 &amp; bootstrap">
+<meta property="og:url" content="https://asfm4001.github.io/Python/Flask/flask/flask-wtf/">
+<meta property="og:site_name" content="MC">
+<meta property="og:description" content="前言在網站中常常用到各式各樣的表單(e.g. 註冊、登入、留言等)，然而每次都要重寫表單實在太麻煩，flask提供flask-wtform套件幫助我們快速建立表單。但單純的表單是沒有辦法滿足我虛榮的內心🤷🏻，剛好bootstrap也支援wtform，我們利用bootstrap美化我們的表單。而隨著我們專案變得更大，檔案與code也變得更多更複雜，我們在import檔案時也遇到的一點狀況，為此也">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2024-10-03T23:20:31.000Z">
+<meta property="article:modified_time" content="2025-04-25T06:37:52.432Z">
+<meta property="article:author" content="Muchian">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="flask">
+<meta property="article:tag" content="bootstrap">
+<meta property="article:tag" content="wtform">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://asfm4001.github.io/Python/Flask/flask/flask-wtf/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/Python/Flask/flask/flask-wtf/","path":"Python/Flask/flask/flask-wtf/","title":"Python Flask - 使用 WTForm 快速建立表單 feet. flask檔案佈局 & bootstrap"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python Flask - 使用 WTForm 快速建立表單 feet. flask檔案佈局 & bootstrap | MC</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MC</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8flask-wtf-WTForm"><span class="nav-number">2.</span> <span class="nav-text">安裝與使用flask-wtf &amp; WTForm</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#flask%E4%BD%88%E5%B1%80"><span class="nav-number">2.1.</span> <span class="nav-text">flask佈局</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flask%E5%89%8D%E7%AB%AF%E4%BD%88%E5%B1%80"><span class="nav-number">2.2.</span> <span class="nav-text">flask前端佈局</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">3.</span> <span class="nav-text">結論</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Muchian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">標籤</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/asfm4001" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;asfm4001" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="回到頂端">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://asfm4001.github.io/Python/Flask/flask/flask-wtf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Muchian">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python Flask - 使用 WTForm 快速建立表單 feet. flask檔案佈局 & bootstrap | MC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python Flask - 使用 WTForm 快速建立表單 feet. flask檔案佈局 & bootstrap
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-10-04 07:20:31" itemprop="dateCreated datePublished" datetime="2024-10-04T07:20:31+08:00">2024-10-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-04-25 14:37:52" itemprop="dateModified" datetime="2025-04-25T14:37:52+08:00">2025-04-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="文章字數">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">文章字數：</span>
+      <span>11k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在網站中常常用到各式各樣的表單(e.g. 註冊、登入、留言等)，然而每次都要重寫表單實在太麻煩，flask提供flask-wtform套件幫助我們快速建立表單。但單純的表單是沒有辦法滿足我虛榮的內心🤷🏻，剛好bootstrap也支援wtform，我們利用bootstrap美化我們的表單。而隨著我們專案變得更大，檔案與code也變得更多更複雜，我們在import檔案時也遇到的一點狀況，為此也影響我們專案的佈局。</p>
+<span id="more"></span>
+<blockquote>
+<p>💡 若你想要安心服用這篇文章，建議你先瞧瞧<br><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-bootstrap/">Python Flask - 使用 Flask Bootstrap 渲染你的HTML</a><br><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-sqlalchemy/">Python Flask - 使用 Flask SQLAlchemy 建立資料庫</a></p>
+</blockquote>
+<h3 id="安裝與使用flask-wtf-WTForm"><a href="#安裝與使用flask-wtf-WTForm" class="headerlink" title="安裝與使用flask-wtf &amp; WTForm"></a>安裝與使用flask-wtf &amp; WTForm</h3><ol>
+<li><p>安裝flask-wtf會連同WTForm一起安裝</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install flask-wtf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新增<samp>froms.py</samp>設定註冊表格</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># froms.py</span></span><br><span class="line"><span class="keyword">from</span> flask_wtf <span class="keyword">import</span> FlaskForm</span><br><span class="line"><span class="keyword">from</span> wtforms <span class="keyword">import</span> StringField, PasswordField, SubmitField</span><br><span class="line"><span class="keyword">from</span> wtforms.validators <span class="keyword">import</span>(</span><br><span class="line">    DataRequired, </span><br><span class="line">    Length, </span><br><span class="line">    Email,</span><br><span class="line">    EqualTo,</span><br><span class="line">    ValidationError</span><br><span class="line">) </span><br><span class="line"><span class="keyword">from</span> app <span class="keyword">import</span> User</span><br><span class="line"></span><br><span class="line"><span class="comment"># 繼承flask_wtf.FlaskForm</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RegisterForm</span>(<span class="title class_ inherited__">FlaskForm</span>):</span><br><span class="line">    username = StringField(<span class="string">&quot;Username&quot;</span>, validators=[DataRequired(), Length(<span class="built_in">min</span>=<span class="number">8</span>, <span class="built_in">max</span>=<span class="number">20</span>)])</span><br><span class="line">    <span class="comment"># &quot;tableName&quot;, </span></span><br><span class="line">    <span class="comment"># validators(檢查條件):</span></span><br><span class="line">        <span class="comment"># DataRequired: 是否為null,</span></span><br><span class="line">        <span class="comment"># Length長度限制</span></span><br><span class="line">    email = StringField(<span class="string">&quot;Email&quot;</span>, validators=[DataRequired(), Email()])</span><br><span class="line">    password = PasswordField(<span class="string">&quot;Password&quot;</span>, validators=[DataRequired(), Length(<span class="built_in">min</span>=<span class="number">8</span>, <span class="built_in">max</span>=<span class="number">20</span>)])</span><br><span class="line">    confirm = PasswordField(<span class="string">&quot;Repeat Password&quot;</span>, validators=[DataRequired(), EqualTo(<span class="string">&quot;password&quot;</span>)])</span><br><span class="line">        <span class="comment"># 要求user重新輸入，並與password相同</span></span><br><span class="line">    submit = SubmitField(<span class="string">&quot;Register&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 檢查username是否已存在</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_username</span>(<span class="params">self, username</span>):</span><br><span class="line">        user = User.query.filter_by(username=username.data).first()</span><br><span class="line">        <span class="keyword">if</span> user:</span><br><span class="line">            <span class="keyword">raise</span> ValidationError(<span class="string">&quot;Username already  token&quot;</span>)</span><br><span class="line">                <span class="comment"># wtform支援設定錯誤訊息</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 檢查email是否已存在</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_email</span>(<span class="params">self, email</span>):</span><br><span class="line">        email = User.query.filter_by(email=email.data).first()</span><br><span class="line">        <span class="keyword">if</span> email:</span><br><span class="line">            <span class="keyword">raise</span> ValidationError(<span class="string">&quot;Email already  token&quot;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在<samp>app.py</samp>引入RegisterForm</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> (</span><br><span class="line">    Flask,</span><br><span class="line">    render_template,    <span class="comment"># 導向html</span></span><br><span class="line">    flash,              <span class="comment"># 顯示訊息</span></span><br><span class="line">    redirect,           <span class="comment"># 重新導向url</span></span><br><span class="line">    url_for             <span class="comment"># 轉換URL</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">from</span> flask_bootstrap <span class="keyword">import</span> Bootstrap</span><br><span class="line"><span class="keyword">from</span> flask_sqlalchemy <span class="keyword">import</span> SQLAlchemy</span><br><span class="line"><span class="keyword">from</span> froms <span class="keyword">import</span> RegisterForm  <span class="comment"># 引入forms.py</span></span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">bootstrap = Bootstrap(app)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 設定資料庫儲存位置</span></span><br><span class="line">app.config[<span class="string">&#x27;SQLALCHEMY_DATABASE_URI&#x27;</span>] = <span class="string">&#x27;sqlite:////tmp/mydatabase.sqlite&#x27;</span></span><br><span class="line">app.config[<span class="string">&#x27;SQLALCHEMY_TRACK_MODIFICATIONS&#x27;</span>] = <span class="literal">False</span></span><br><span class="line">db = SQLAlchemy(app)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用form必須設定私鑰(用於傳輸form的data)</span></span><br><span class="line">app.config[<span class="string">&#x27;SECRET_KEY&#x27;</span>] = <span class="string">&#x27;A_VERY_LONG_SECRET_KEY&#x27;</span></span><br><span class="line">    <span class="comment"># 在正式環境中必須設定一個足夠長的私有密鑰，這裡僅示意</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span>(db.Model):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer, primary_key=<span class="literal">True</span>)</span><br><span class="line">    username = db.Column(db.String(<span class="number">20</span>), unique=<span class="literal">True</span>, nullable=<span class="literal">False</span>)</span><br><span class="line">    password = db.Column(db.String(<span class="number">20</span>), nullable=<span class="literal">False</span>)</span><br><span class="line">    email = db.Column(db.String(<span class="number">120</span>), unique=<span class="literal">True</span>, nullable=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&#x27;&lt;User <span class="subst">&#123;self.username&#125;</span>&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/index&quot;</span>, methods=[<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;index.html&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 設定註冊頁面URL</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/register&quot;</span>, methods=[<span class="string">&quot;GET&quot;</span>,<span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">register</span>():</span><br><span class="line">    form = RegisterForm()   <span class="comment"># 使用froms.py的RegisterForm表單</span></span><br><span class="line">    <span class="keyword">if</span> form.validate_on_submit():</span><br><span class="line">        username = form.username.data</span><br><span class="line">        email = form.email.data </span><br><span class="line">        password = form.password.data</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 新建User</span></span><br><span class="line">        user = User(username=username, password=password, email=email)</span><br><span class="line">        db.session.add(user)</span><br><span class="line">        <span class="comment"># 儲存至資料庫</span></span><br><span class="line">        db.session.commit()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 使用flash函數顯示註冊成功訊息</span></span><br><span class="line">        flash(<span class="string">&quot;Congrats, registration success!&quot;</span>, category=<span class="string">&quot;success&quot;</span>)</span><br><span class="line">            <span class="comment"># category:</span></span><br><span class="line">                <span class="comment"># success:  綠</span></span><br><span class="line">                <span class="comment"># info:     藍</span></span><br><span class="line">                <span class="comment"># danger:   紅</span></span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&quot;index&quot;</span>))   <span class="comment"># 重新導向&quot;index&quot;</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;register.html&quot;</span>, form=form)  <span class="comment"># 載入/templates模板</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在<samp>&#x2F;templates</samp>新增<samp>register.html</samp>模板</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- register.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>This is Register Page.<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;row&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col-md-6&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 顯示flash --&gt;</span></span><br><span class="line">        &#123;% with messages = get_flashed_messages(with_categories=true) %&#125;</span><br><span class="line">        &#123;% if messages %&#125;</span><br><span class="line">            &#123;% for category, message in messages %&#125;</span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;alert alert-&#123;&#123; category &#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">                &#123;&#123; message &#125;&#125;</span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            &#123;% endfor %&#125;</span><br><span class="line">        &#123;% endif %&#125;</span><br><span class="line">        &#123;% endwith %&#125;</span><br><span class="line">        <span class="comment">&lt;!-- 顯示表單 --&gt;</span></span><br><span class="line">        &#123;% import &quot;bootstrap/wtf.html&quot; as wtf %&#125;</span><br><span class="line">        &#123;&#123; wtf.quick_form(form) &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>這時可以運行<samp>app.py</samp>，但會報下面這個錯誤訊息</p>
+<blockquote>
+<p><code style="color: red"> ImportError: cannot import name 'User' from partially initialized module 'app' (most likely due to a circular import)</code></p>
+</blockquote>
+</li>
+</ol>
+<p>這是因為<samp>app.py</samp>引入<samp>forms.py</samp>(RegisterForm)時，<samp>forms.py</samp>又引入<samp>app.py</samp>(User)，形成A導入B，B又導入A的Import Error(導入錯誤)狀況發生。而好的部署能夠有效防止這類的狀況發生，並且讓其他開發人員不會看到你的code就頭暈 😵‍💫</p>
+<h4 id="flask佈局"><a href="#flask佈局" class="headerlink" title="flask佈局"></a>flask佈局</h4><p>在常見的專案當中，會將<samp>config.py</samp>(設定檔)與<samp>app.py</samp> or <samp>run.py</samp>(執行檔)至於專案最外層，其餘副程式會置於<samp>&#x2F;app</samp>當中。<br><samp>&#x2F;app</samp>中的<samp>__init__.py</samp>必須存在(即使為null也無妨)，python才可以識別資料夾</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── run.py                  # 執行檔</span><br><span class="line">├── config.py               # 設定檔</span><br><span class="line">└── /app</span><br><span class="line">    ├── __init__.py</span><br><span class="line">    ├── routes.py           # url路徑</span><br><span class="line">    ├── forms.py            # 表單模型</span><br><span class="line">    ├── models.py           # 資料庫table模型</span><br><span class="line">    ├── /templates          # html</span><br><span class="line">    │   ├── index.html</span><br><span class="line">    │   └── register.html</span><br><span class="line">    └── /instance</span><br><span class="line">        └── database.sqlite # 儲存DB</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在<a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-sqlalchemy/">Python Flask - 使用 Flask SQLAlchemy 建立資料庫</a>時，我們資料庫位於<samp>&#x2F;tmp</samp>內，這裡我沒有特別指定位置，flask會自動在專案內新增<samp>&#x2F;instance<samp>，並將資料庫儲存於此資料夾下</p>
+</blockquote>
+<ul>
+<li><p><samp>run.py</samp></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># run.py</span></span><br><span class="line"><span class="keyword">from</span> app <span class="keyword">import</span> app</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><samp>config.py</samp></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># config.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Config</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="comment"># 設定資料庫儲存位置</span></span><br><span class="line">    SQLALCHEMY_DATABASE_URI = <span class="string">&#x27;sqlite:///database.sqlite&#x27;</span></span><br><span class="line">    SQLALCHEMY_TRACK_MODIFICATIONS = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用form必須設定私鑰(用於傳輸form的data)</span></span><br><span class="line">    app.config[<span class="string">&#x27;SECRET_KEY&#x27;</span>] = <span class="string">&#x27;A_VERY_LONG_SECRET_KEY&#x27;</span></span><br><span class="line">        <span class="comment"># 在正式環境中必須設定一個足夠長的私有密鑰，這裡僅示意   </span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>⚠️ 關於金鑰這類型的變數通常不會儲存專案檔當中(因版控git會上傳至remote(雲端))，而是放在環境變數當中(未來有機會再特別說明)</p>
+</blockquote>
+</li>
+<li><p><samp>__init__.py</samp></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># __init__.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> flask_bootstrap <span class="keyword">import</span> Bootstrap</span><br><span class="line"><span class="keyword">from</span> flask_sqlalchemy <span class="keyword">import</span> SQLAlchemy</span><br><span class="line"><span class="comment"># 引用Config.py 內含db路徑, secret key</span></span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> Config</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">app.config.from_object(Config)</span><br><span class="line"></span><br><span class="line">bootstrap = Bootstrap(app)</span><br><span class="line">db = SQLAlchemy(app)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取代原本路由的位置(app的裝飾器)</span></span><br><span class="line"><span class="keyword">from</span> app.routes <span class="keyword">import</span> *</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><samp>routes.py</samp></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># routes.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> render_template, flash, redirect, url_for</span><br><span class="line"><span class="keyword">from</span> app <span class="keyword">import</span> app, db</span><br><span class="line"><span class="keyword">from</span> app.froms <span class="keyword">import</span> RegisterForm</span><br><span class="line"><span class="keyword">from</span> app.models <span class="keyword">import</span> User</span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/index&quot;</span>, methods=[<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;index.html&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/register&quot;</span>, methods=[<span class="string">&quot;GET&quot;</span>,<span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">register</span>():</span><br><span class="line">    form = RegisterForm()</span><br><span class="line">    <span class="keyword">if</span> form.validate_on_submit():</span><br><span class="line">        username = form.username.data</span><br><span class="line">        email = form.email.data </span><br><span class="line">        password = form.password.data</span><br><span class="line"></span><br><span class="line">        user = User(username=username, password=password, email=email)</span><br><span class="line">        db.session.add(user)</span><br><span class="line">        db.session.commit()</span><br><span class="line"></span><br><span class="line">        flash(<span class="string">&quot;Congrats, registration success!&quot;</span>, category=<span class="string">&quot;success&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&quot;index&quot;</span>))</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;register.html&quot;</span>, form=form)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><samp>forms.py</samp></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># forms.py</span></span><br><span class="line"><span class="keyword">from</span> flask_wtf <span class="keyword">import</span> FlaskForm</span><br><span class="line"><span class="keyword">from</span> wtforms <span class="keyword">import</span> StringField, PasswordField, SubmitField</span><br><span class="line"><span class="keyword">from</span> wtforms.validators <span class="keyword">import</span>(</span><br><span class="line">    DataRequired, </span><br><span class="line">    Length, </span><br><span class="line">    Email,</span><br><span class="line">    EqualTo,</span><br><span class="line">    ValidationError</span><br><span class="line">) </span><br><span class="line"><span class="keyword">from</span> app.models <span class="keyword">import</span> User</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RegisterForm</span>(<span class="title class_ inherited__">FlaskForm</span>):</span><br><span class="line">    username = StringField(<span class="string">&quot;Username&quot;</span>, validators=[DataRequired(), Length(<span class="built_in">min</span>=<span class="number">8</span>, <span class="built_in">max</span>=<span class="number">20</span>)])</span><br><span class="line">    <span class="comment"># &quot;tableName&quot;, </span></span><br><span class="line">    <span class="comment"># validators(檢查條件):</span></span><br><span class="line">        <span class="comment"># DataRequired: 是否為null</span></span><br><span class="line">        <span class="comment"># Length長度</span></span><br><span class="line">    email = StringField(<span class="string">&quot;Email&quot;</span>, validators=[DataRequired(), Email()])</span><br><span class="line">    password = PasswordField(<span class="string">&quot;Password&quot;</span>, validators=[DataRequired(), Length(<span class="built_in">min</span>=<span class="number">8</span>, <span class="built_in">max</span>=<span class="number">20</span>)])</span><br><span class="line">    confirm = PasswordField(<span class="string">&quot;Repeat Password&quot;</span>, validators=[DataRequired(), EqualTo(<span class="string">&quot;password&quot;</span>)])</span><br><span class="line">    submit = SubmitField(<span class="string">&quot;Register&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_username</span>(<span class="params">self, username</span>):</span><br><span class="line">        user = User.query.filter_by(username=username.data).first()</span><br><span class="line">        <span class="keyword">if</span> user:</span><br><span class="line">            <span class="keyword">raise</span> ValidationError(<span class="string">&quot;Username already  token&quot;</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_email</span>(<span class="params">self, email</span>):</span><br><span class="line">        email = User.query.filter_by(email=email.data).first()</span><br><span class="line">        <span class="keyword">if</span> email:</span><br><span class="line">            <span class="keyword">raise</span> ValidationError(<span class="string">&quot;Email already  token&quot;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><samp>models.py</samp></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># models.py</span></span><br><span class="line"><span class="keyword">from</span> app <span class="keyword">import</span> db</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span>(db.Model):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer, primary_key=<span class="literal">True</span>)</span><br><span class="line">    username = db.Column(db.String(<span class="number">80</span>), unique=<span class="literal">True</span>, nullable=<span class="literal">False</span>)</span><br><span class="line">    email = db.Column(db.String(<span class="number">120</span>), unique=<span class="literal">True</span>, nullable=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&#x27;&lt;User <span class="subst">&#123;self.username&#125;</span>&gt;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="6">
+<li>完成部署後執行<code>flask run --debug</code>在<a target="_blank" rel="noopener" href="http://localhost:5000/register">http://localhost:5000/register</a>就可以看到我們簡易<del>且醜陋</del>的表單(歡呼🥳)<blockquote class="imgur-embed-pub" lang="en" data-id="a/7Mq0iTA"  ><a target="_blank" rel="noopener" href="//imgur.com/a/7Mq0iTA">FlaskRegisterForm</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script></li>
+</ol>
+<h4 id="flask前端佈局"><a href="#flask前端佈局" class="headerlink" title="flask前端佈局"></a>flask前端佈局</h4><p>在<samp>&#x2F;templates</samp>下的html檔其實也有很多可以重複利用的地方，為了減少寫相同的code(懶?)，這裡也使用相似的概念佈局，同時也用bootstrap美化我們的html</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/templates          </span><br><span class="line">    ├── navbar.html     # 導航列</span><br><span class="line">    ├── base.html       # 模板基底</span><br><span class="line">    ├── index.html</span><br><span class="line">    └── register.html</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><samp>navbar.html</samp></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- navbar.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">class</span>=<span class="string">&quot;navbar navbar-default&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;navbar-header&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">class</span>=<span class="string">&quot;navbar-toggle collapsed&quot;</span> <span class="attr">data-toggle</span>=<span class="string">&quot;collapse&quot;</span> <span class="attr">data-target</span>=<span class="string">&quot;#bs-example-navbar-collapse-1&quot;</span> <span class="attr">aria-expanded</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;sr-only&quot;</span>&gt;</span>Toggle navigation<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;icon-bar&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;navbar-brand&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;index&#x27;) &#125;&#125;&quot;</span>&gt;</span>Flask App<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  </span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;collapse navbar-collapse&quot;</span> <span class="attr">id</span>=<span class="string">&quot;bs-example-navbar-collapse-1&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;nav navbar-nav&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;index&#x27;) &#125;&#125;&quot;</span>&gt;</span>Home<span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;sr-only&quot;</span>&gt;</span>(current)<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="comment">&lt;!-- /.navbar-collapse --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="comment">&lt;!-- /.container-fluid --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><samp>base.html</samp></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- base.html --&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 引入bootstrap模板 --&gt;</span></span><br><span class="line">        &#123;% include &quot;bootstrap/base.html&quot; %&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        &#123;% block navbar %&#125;</span><br><span class="line">            <span class="comment">&lt;!-- 引入navbar.html --&gt;</span></span><br><span class="line">            &#123;% include &quot;navbar.html&quot; %&#125;</span><br><span class="line">        &#123;% endblock %&#125;</span><br><span class="line">        &#123;% block content %&#125;</span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;row&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col-md-6&quot;</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!-- 顯示flash message --&gt;</span></span><br><span class="line">                        &#123;% with messages = get_flashed_messages(with_categories=true) %&#125;</span><br><span class="line">                            &#123;% if messages %&#125;</span><br><span class="line">                                &#123;% for category, message in messages %&#125;</span><br><span class="line">                                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;alert alert-&#123;&#123; category &#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">                                    &#123;&#123; message &#125;&#125;</span><br><span class="line">                                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                                &#123;% endfor %&#125;</span><br><span class="line">                            &#123;% endif %&#125;</span><br><span class="line">                        &#123;% endwith %&#125;</span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">                &#123;% block app_content %&#125;</span><br><span class="line">                &#123;% endblock app_content%&#125;</span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        &#123;% endblock %&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><samp>index.html</samp></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- index.html --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 引入base.html --&gt;</span></span><br><span class="line">&#123;% extends &quot;base.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block app_content %&#125;</span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>OMG!!! flask-bootsrtap is great.<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><samp>register.html</samp></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- register.html --&gt;</span></span><br><span class="line"> <span class="comment">&lt;!-- 引入base.html --&gt;</span></span><br><span class="line">&#123;% extends &quot;base.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block app_content %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>This is Register Page.<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;row&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col-md-6&quot;</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 引入bootstrap模板，並引入表單 --&gt;</span></span><br><span class="line">            &#123;% import &quot;bootstrap/wtf.html&quot; as wtf %&#125;</span><br><span class="line">            &#123;&#123; wtf.quick_form(form) &#125;&#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="7">
+<li>更改後就可以看到美滋滋💄的註冊表單與首頁了🥳<blockquote class="imgur-embed-pub" lang="en" data-id="a/h8Rbc6S"  ><a target="_blank" rel="noopener" href="//imgur.com/a/h8Rbc6S">FlaskRegisterForm II</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script></li>
+</ol>
+<p>雖然現在後端還沒完成，但你仍可以試著輸入資料到表格當中，wtfrom最讚的是: <strong>在前端會依設定先行檢查數據</strong>，降低後端的工作量(給你一個讚🫵🏻👍🏻)</p>
+<blockquote>
+<p>💡 因為在<samp>forms.py</samp>中每一個table都有設定<samp>validators</samp>屬性來限制client的輸入</p>
+</blockquote>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><ul>
+<li><input checked="" disabled="" type="checkbox"> 使用flask-wtf快速建立表單</li>
+<li><input checked="" disabled="" type="checkbox"> 使用<samp>wtf.quick_form</samp>必須設定<kdb>SECRET KEY</kdb>❗️</li>
+<li><input checked="" disabled="" type="checkbox"> 重新佈局flask，解決Import Error問題</li>
+<li><input checked="" disabled="" type="checkbox"> 使用bootstrap模板美化wtform </li>
+<li><input checked="" disabled="" type="checkbox"> wtform 在前端時會依設定條件先行檢查form中的數據</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/flask/" rel="tag"># flask</a>
+              <a href="/tags/bootstrap/" rel="tag"># bootstrap</a>
+              <a href="/tags/wtform/" rel="tag"># wtform</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Python/Flask/flask/flask-sqlalchemy/" rel="prev" title="Python Flask - 使用 Flask SQLAlchemy 建立資料庫">
+                  <i class="fa fa-chevron-left"></i> Python Flask - 使用 Flask SQLAlchemy 建立資料庫
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Python/Flask/flask/flask-2/" rel="next" title="Python Flask 概念與實作(二) - Web server概念">
+                  Python Flask 概念與實作(二) - Web server概念 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Muchian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>總字數：</span>
+    <span title="總字數">131k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"mcdaily","count":false,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

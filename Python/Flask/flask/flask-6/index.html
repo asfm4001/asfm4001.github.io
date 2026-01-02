@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"asfm4001.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言雖說這節要講登入功能(login&#x2F;signin)，但其實最重要的是註冊功能(register) 😂😂 ，畢竟要有user data才能登入啊~~">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python Flask 概念與實作(六) - 登入功能">
+<meta property="og:url" content="https://asfm4001.github.io/Python/Flask/flask/flask-6/">
+<meta property="og:site_name" content="MC">
+<meta property="og:description" content="前言雖說這節要講登入功能(login&#x2F;signin)，但其實最重要的是註冊功能(register) 😂😂 ，畢竟要有user data才能登入啊~~">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2025-04-25T03:27:16.000Z">
+<meta property="article:modified_time" content="2025-05-06T05:34:11.985Z">
+<meta property="article:author" content="Muchian">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="flask">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://asfm4001.github.io/Python/Flask/flask/flask-6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/Python/Flask/flask/flask-6/","path":"Python/Flask/flask/flask-6/","title":"Python Flask 概念與實作(六) - 登入功能"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python Flask 概念與實作(六) - 登入功能 | MC</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MC</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fornt-side"><span class="nav-number">2.</span> <span class="nav-text">Fornt-side</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CSRF-Cross-Site-Request-Forgery"><span class="nav-number">2.1.</span> <span class="nav-text">CSRF, Cross Site Request Forgery</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Back-side"><span class="nav-number">3.</span> <span class="nav-text">Back-side</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Flask-Login"><span class="nav-number">3.1.</span> <span class="nav-text">Flask-Login</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Flask-Bcrypt"><span class="nav-number">3.2.</span> <span class="nav-text">Flask Bcrypt</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">4.</span> <span class="nav-text">結論</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Muchian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">標籤</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/asfm4001" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;asfm4001" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="回到頂端">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://asfm4001.github.io/Python/Flask/flask/flask-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Muchian">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python Flask 概念與實作(六) - 登入功能 | MC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python Flask 概念與實作(六) - 登入功能
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-04-25 11:27:16" itemprop="dateCreated datePublished" datetime="2025-04-25T11:27:16+08:00">2025-04-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-05-06 13:34:11" itemprop="dateModified" datetime="2025-05-06T13:34:11+08:00">2025-05-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="文章字數">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">文章字數：</span>
+      <span>12k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>雖說這節要講登入功能(login&#x2F;signin)，但其實最重要的是註冊功能(register) 😂😂 ，畢竟要有user data才能登入啊~~</p>
+<span id="more"></span>
+
+<hr>
+<p>目前 <em><strong>Python Flask 概念與實作</strong></em> 大致規劃為</p>
+<ol>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-0/">佈置環境</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-1/">Flask model運用(一)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-2/">Web server概念(二)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-3/">專案檔案分佈(三)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-4/">連接資料庫(四)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-5/">渲染模板(五)</a></li>
+<li>登入功能(六)</li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-7/">Blog功能(七)</a></li>
+</ol>
+<p>在開發過程中，Test(測試)其實也很重要，但礙於缺乏經驗，若之後有望的話再補上(專案打包、網站優化等等亦同)</p>
+<hr>
+<h3 id="Fornt-side"><a href="#Fornt-side" class="headerlink" title="Fornt-side"></a>Fornt-side</h3><p>在<a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-wtf/">使用 WTForm 快速建立表單 feet. flask檔案佈局 &amp; bootstrap</a>一節，我們已經可以使用bootstrap製作表單，這裡我們新增註冊與登入表單前端</p>
+<ol>
+<li>新增<code>register.html</code> <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- user/register.html --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 略... --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h3</span> <span class="attr">class</span>=<span class="string">&quot;heading h3 mb-4&quot;</span>&gt;</span>註冊<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">&#123;% from &#x27;bootstrap4/form.html&#x27; import render_field %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br><span class="line">    &#123;&#123; form.csrf_token() &#125;&#125;</span><br><span class="line">    &#123;&#123; render_field(form.username, placeholder=&quot;請輸入手機號碼或使用者代號&quot;, class=&quot;form-control&quot;) &#125;&#125;</span><br><span class="line">    &#123;&#123; render_field(form.email, placeholder=&quot;example@gmail.com&quot;, class=&quot;form-control&quot;, type=&quot;email&quot;) &#125;&#125;</span><br><span class="line">    &#123;&#123; render_field(form.password, placeholder=&quot;請輸入密碼(6~20位英數混合)&quot;, class=&quot;form-control&quot;) &#125;&#125;</span><br><span class="line">    &#123;&#123; render_field(form.confirm, placeholder=&quot;&quot;, class=&quot;form-control&quot;) &#125;&#125;</span><br><span class="line">    &#123;&#123; render_field(form.submit, class=&quot;btn btn-dark px-4&quot;) &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 略... --&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>❗️ Notice: 快速建立表單時使用的<code>render_form</code>已包含<code>method=&quot;POST&quot; enctype=&quot;multipart/form-data&quot;</code>與<code>&#123;&#123; form.csrf_token() &#125;&#125;</code>; 使用<code>render_field</code>則必須自行加入</p>
+</blockquote>
+</li>
+<li>新增<code>signin.html</code> <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- users/sigin.html--&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 略... --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h3</span> <span class="attr">class</span>=<span class="string">&quot;heading text-white pt-2&quot;</span>&gt;</span>登入<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">&#123;% from &#x27;bootstrap4/form.html&#x27; import render_field %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">&quot;form-dark&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br><span class="line">    &#123;&#123; form.csrf_token() &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">id</span>=<span class="string">&quot;username&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;請輸入電話號碼或使用者代號&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">id</span>=<span class="string">&quot;password&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;請輸入密碼(6~20位元)&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;text-right mt-4&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;users.register&#x27;) &#125;&#125;&quot;</span> <span class="attr">class</span>=<span class="string">&quot;text-white&quot;</span>&gt;</span>註冊<span class="tag">&lt;/<span class="name">a</span>&gt;</span> <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;text-white&quot;</span>&gt;</span>忘記密碼?<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-block bg-white mt-4&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;text-datk&quot;</span>&gt;</span>Sign in<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 略... --&gt;</span></span><br></pre></td></tr></table></figure>
+ 雖然可以使用<code>wtf.quick_form(form)</code>搭配model快速建立表單，但自己寫一個還是比較美觀 🤭</li>
+<li>在<code>index.html</code>新增登入或登出連接 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- index.html --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 略... ---&gt;</span></span><br><span class="line">&#123;% if not current_user.is_authenticated %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;users.signin&#x27;) &#125;&#125;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fas fa-user&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>Signin<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">&#123;% else %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;users.logout&#x27;) &#125;&#125;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fas fa-sign-out-alt text-tertiary&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>登出<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>💡 Notice: 若當前client已經登入，<code>current_user.is_authenticated</code>返回<code>True</code>，否則返回<code>False</code></p>
+</blockquote>
+</li>
+</ol>
+<h4 id="CSRF-Cross-Site-Request-Forgery"><a href="#CSRF-Cross-Site-Request-Forgery" class="headerlink" title="CSRF, Cross Site Request Forgery"></a>CSRF, Cross Site Request Forgery</h4><p>這裡稍微解釋一下為何<code>&lt;form&gt;</code>標籤內要包含<code>&#123;&#123; form.csrf_token() &#125;&#125;</code></p>
+<p>起初client每次訪問server時，都需要做一次驗證，造成資源浪費，而cookie(<strong>明文的資訊</strong>，可自行修改)的出現讓client可以儲存自身的狀態。</p>
+<p>但http並不是一個安全的傳輸協議，有一天惡意攻擊者在網路中獲得你的cookie時，他會使用這個cookie偽造你的身份，發送假的訊息給server(有點類似用你的集點卡去換獎品的概念)，這就是CSRF(跨網站請求偽造)。</p>
+<p>然而要防範這種狀況，server會在user訪問時給予一個session(<strong>加密的資訊</strong>)，session也是cookie的一種，雖然儲存在user端，但只有server可解密。</p>
+<p>當user傳送訊息給server時，必須包含此session，如此server可確保你的訊息不被惡意攻擊者偽造(因session包含username與時戳)，而此session就是<strong>CSRF token</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># routes.py</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">signin</span>():</span><br><span class="line">    form = SigninForm()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> form.is_submitted():     <span class="comment"># 若form傳送成功</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;submitted&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> form.validate():         <span class="comment"># 若form驗證器驗證成功</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;valid&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(form.errors)          <span class="comment"># 顯示form返回的錯誤訊息</span></span><br><span class="line">    <span class="comment"># 當前端無使用&#123;&#123; form.csrf_token &#125;&#125;時,</span></span><br><span class="line">    <span class="comment"># &#x27;csrf_token&#x27;: [&#x27;The CSRF token is missing.&#x27;]</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> form.validate_on_submit():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;form.validate_on_submit success&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;sign-in.html&quot;</span>, form=form)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Back-side"><a href="#Back-side" class="headerlink" title="Back-side"></a>Back-side</h3><p>有了前端介面就可以來修改後端邏輯了!!Flask中有<code>flask-login</code>套件幫助我們管理client的狀態</p>
+<h4 id="Flask-Login"><a href="#Flask-Login" class="headerlink" title="Flask-Login"></a>Flask-Login</h4><ol>
+<li>安裝<code>flask-login</code> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install flask-login</span><br></pre></td></tr></table></figure></li>
+<li>修改<code>models.py</code>，定義<code>lgoin</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># models.py</span></span><br><span class="line"><span class="keyword">from</span> flask_login <span class="keyword">import</span> LoginManager, UserMixin</span><br><span class="line"></span><br><span class="line">login = LoginManager()</span><br><span class="line"></span><br><span class="line"><span class="meta">@login.user_loader</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_user</span>(<span class="params">user_id</span>):</span><br><span class="line">    <span class="keyword">return</span> Users.query.filter_by(<span class="built_in">id</span>=user_id).first()</span><br></pre></td></tr></table></figure></li>
+<li>修改<code>__init__.py</code>，實體化<code>login</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># __init__.py</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_app</span>(<span class="params">configname=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="comment"># 略...</span></span><br><span class="line">    login.init_app(app)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># login_required 設定</span></span><br><span class="line">    login.login_view = <span class="string">&quot;signin&quot;</span>                                 <span class="comment"># 訪問欲登入權限時跳轉頁面</span></span><br><span class="line">    login.login_message = <span class="string">&quot;You must login to access this page.&quot;</span> <span class="comment"># 訪問欲登入頁面顯示訊息</span></span><br><span class="line">    login.login_message_category = <span class="string">&quot;info&quot;</span>                       <span class="comment"># 訊息警示種類(顏色)</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> app</span><br></pre></td></tr></table></figure></li>
+<li>在<code>models.py</code>新增<code>Users</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># user/models.py</span></span><br><span class="line"><span class="keyword">from</span> flask_sqlalchemy <span class="keyword">import</span> SQLAlchemy</span><br><span class="line">db = SQLAlchemy()</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Users</span>(db.Model, UserMixin):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer, primary_key=<span class="literal">True</span>)</span><br><span class="line">    username = db.Column(db.String(<span class="number">20</span>), unique=<span class="literal">True</span>, nullable=<span class="literal">False</span>)</span><br><span class="line">    email = db.Column(db.String(<span class="number">120</span>), unique=<span class="literal">True</span>, nullable=<span class="literal">False</span>)</span><br><span class="line">    password = db.Column(db.String(<span class="number">20</span>), nullable=<span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&#x27;&lt;Users <span class="subst">&#123;self.username&#125;</span>&gt;&#x27;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>💡 Notice: 建議可以先在flask shell中測試<code>Users</code> model無問題再進行下一步</p>
+</blockquote>
+</li>
+<li>在<code>users/forms.py</code>新增<code>RegisterForm</code>與<code>SigninForm</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> wtforms <span class="keyword">import</span> StringField,SubmitField,PasswordField</span><br><span class="line"><span class="keyword">from</span> wtforms.validators <span class="keyword">import</span> DataRequired, Length, \</span><br><span class="line">    ValidationError, Email, EqualTo</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RegisterForm</span>(<span class="title class_ inherited__">FlaskForm</span>):</span><br><span class="line">username = StringField(<span class="string">&quot;帳號&quot;</span>, validators=[DataRequired(), Length(<span class="built_in">min</span>=<span class="number">6</span>, <span class="built_in">max</span>=<span class="number">20</span>)])</span><br><span class="line"><span class="comment"># 需安裝email_validator</span></span><br><span class="line">email = StringField(<span class="string">&quot;Email&quot;</span>, validators=[DataRequired(), Email()])</span><br><span class="line">password = PasswordField(<span class="string">&quot;密碼&quot;</span>, validators=[DataRequired(), Length(<span class="built_in">min</span>=<span class="number">6</span>, <span class="built_in">max</span>=<span class="number">20</span>)])</span><br><span class="line">confirm = PasswordField(<span class="string">&quot;確認密碼&quot;</span>, validators=[DataRequired(), EqualTo(<span class="string">&quot;password&quot;</span>)])</span><br><span class="line">submit = SubmitField(<span class="string">&quot;註冊&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SigninForm</span>(<span class="title class_ inherited__">FlaskForm</span>):</span><br><span class="line">    username = StringField(<span class="string">&quot;帳號&quot;</span>, validators=[DataRequired(), Length(<span class="built_in">min</span>=<span class="number">6</span>, <span class="built_in">max</span>=<span class="number">20</span>)])</span><br><span class="line">    password = PasswordField(<span class="string">&quot;密碼&quot;</span>, validators=[DataRequired(), Length(<span class="built_in">min</span>=<span class="number">6</span>, <span class="built_in">max</span>=<span class="number">20</span>)])</span><br><span class="line">    submit = SubmitField(<span class="string">&quot;登入&quot;</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_name</span>(<span class="params">self, username, password</span>):  <span class="comment"># name 必須與上方的變數名相同</span></span><br><span class="line">        user = Users.query.filter_by(username=username.data).first() </span><br><span class="line">        <span class="keyword">if</span> user :</span><br><span class="line">            <span class="keyword">raise</span> ValidationError(<span class="string">&quot;帳號不存在或密碼錯誤&quot;</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>💡 Notice: email中的validators(檢查器)，<code>Email()</code>需額外安裝<code>email_validator</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install email_validator</span><br></pre></td></tr></table></figure></blockquote>
+</li>
+<li>在<code>users/routes.py</code>新增<code>register()</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># user/routes.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> redirect, flash, render_template, url_for, session</span><br><span class="line"><span class="keyword">from</span> flask_login <span class="keyword">import</span> current_user, login_user</span><br><span class="line"><span class="keyword">from</span> app.forms <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="meta">@users_bp.route(<span class="params"><span class="string">&quot;/register&quot;</span>, methods=[<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">register</span>():</span><br><span class="line">    form = RegisterForm()</span><br><span class="line">    <span class="keyword">if</span> form.validate_on_submit():</span><br><span class="line">        username = form.username.data</span><br><span class="line">        email = form.email.data</span><br><span class="line">        password = form.password.data</span><br><span class="line">        <span class="keyword">if</span> Users.query.filter_by(username=username).first():</span><br><span class="line">            flash(<span class="string">&#x27;此帳號已被使用，請改使用其他帳號&#x27;</span>, category=<span class="string">&#x27;warning&#x27;</span>)</span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">&#x27;register.html&#x27;</span>, form=form)</span><br><span class="line">        <span class="keyword">if</span> Users.query.filter_by(email=email).first():</span><br><span class="line">            flash(<span class="string">&#x27;此信箱已被使用，請改使用其他信箱。&#x27;</span>, category=<span class="string">&#x27;warning&#x27;</span>)</span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">&#x27;register.html&#x27;</span>, form=form)</span><br><span class="line">        user = Users(username=username, email=email, password=password)</span><br><span class="line">        db.session.add(user)</span><br><span class="line">        db.session.commit()</span><br><span class="line">        flash(<span class="string">&quot;註冊成功!!&quot;</span>, category=<span class="string">&quot;success&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&quot;users.signin&quot;</span>))</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;register.html&quot;</span>, form=form)</span><br></pre></td></tr></table></figure></li>
+<li>在<code>users/routes.py</code>新增<code>signin()</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># users/routes.py</span></span><br><span class="line"><span class="meta">@users_bp.route(<span class="params"><span class="string">&quot;/signin&quot;</span>, methods=[<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">signin</span>():</span><br><span class="line">    <span class="comment"># 若已登入, 則導回index.html</span></span><br><span class="line">    <span class="keyword">if</span> current_user.is_authenticated:</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&quot;main.index&quot;</span>))</span><br><span class="line">    form = SigninForm()</span><br><span class="line">    username = form.username.data</span><br><span class="line">    password = form.password.data</span><br><span class="line">    user = Users.query.filter_by(username=username).first()</span><br><span class="line">    <span class="keyword">if</span> form.is_submitted():     <span class="comment"># 當表單傳送時</span></span><br><span class="line">        <span class="keyword">if</span> form.validate() <span class="keyword">and</span> user <span class="keyword">and</span> user.password == password:</span><br><span class="line">            <span class="comment"># 表單格式合法, user是存在的, user&#x27;s password相符</span></span><br><span class="line">            login_user(user)</span><br><span class="line">            session[<span class="string">&quot;username&quot;</span>] = user.username</span><br><span class="line">            flash(<span class="string">&quot;歡迎回來&quot;</span>, category=<span class="string">&quot;success&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> redirect(url_for(<span class="string">&quot;main.index&quot;</span>))</span><br><span class="line">        <span class="built_in">print</span>(form.errors)</span><br><span class="line">        flash(<span class="string">&quot;帳號或密碼錯誤，請重新輸入&quot;</span>, category=<span class="string">&quot;danger&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&quot;users.signin&quot;</span>))</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;sign-in.html&quot;</span>, form=form)</span><br></pre></td></tr></table></figure></li>
+<li>在<code>users/routes.py</code>新增<code>logout()</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@users_bp.route(<span class="params"><span class="string">&quot;/logout&quot;</span></span>)</span></span><br><span class="line"><span class="meta">@login_required     </span><span class="comment"># 要求使用者必須登入後才能訪問</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">logout</span>():</span><br><span class="line">    logout_user()</span><br><span class="line">    <span class="keyword">return</span> redirect(url_for(<span class="string">&quot;users.signin&quot;</span>))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>💡 Notice: 使用<code>@login_required</code>可限制client必須登入才能訪問此頁面，否則回跳至<code>__init__.py</code>中設定的路徑，並且顯示提示訊息</p>
+</blockquote>
+</li>
+</ol>
+<p>至此，我們已經完成一個註冊與登入功能。</p>
+<p>並且登入後，Flask會在session中紀錄我們的登入狀態 🤙🏻</p>
+<h4 id="Flask-Bcrypt"><a href="#Flask-Bcrypt" class="headerlink" title="Flask Bcrypt"></a>Flask Bcrypt</h4><p>雖說我們已經實現註冊與登入功能，但其實存在一個嚴重問題。</p>
+<p>如果使用flask shell訪問<code>user.password</code>，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> models <span class="keyword">import</span> User</span><br><span class="line">u = Users.query.<span class="built_in">all</span>()[<span class="number">0</span>]</span><br><span class="line">u           <span class="comment"># &lt;Users test1234&gt;</span></span><br><span class="line">u.password  <span class="comment"># 12345678</span></span><br></pre></td></tr></table></figure>
+<p>使用者的密碼並沒有遮罩保存，衍生下列的問題</p>
+<ol>
+<li>明文密碼儲存在資料庫，造成保管上的疑慮(雲端伺服器)</li>
+<li>使用者在不同網站中的密碼大概率是相同的，即使當前的網站被破解對使用者無妨。但攻擊者仍可使用此密碼去攻擊其他網站</li>
+</ol>
+<p>因此我們需要一個機制可以將密碼遮罩的同時，又可以驗證user輸入的密碼是否正確。</p>
+<p>而我們可以使用一種Hash Function(雜湊函數)的技術，其特性為:</p>
+<ol>
+<li>輸出的結果是隨機且不可逆的，無法使用hash value回推輸入</li>
+<li>不同的長的字串丟入Hash Function中，都會輸出相同長度的hash value</li>
+<li>不同的字串丟入Hash Function結果相異。即使非常相似，兩者hash value也各不相關</li>
+<li>相同的字串丟入Hash Function結果相同。</li>
+</ol>
+<blockquote>
+<p>💡 Notice: 當然也有不同輸入結果相同的狀況發生(Collision, 碰撞)，但這不在本節的討論範圍中</p>
+</blockquote>
+<p><code>Flask-Bcrypt</code>讓我們可以快速使用這個技術</p>
+<ol>
+<li>安裝<code>flask-bcrypt</code> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install flask-bcrypt</span><br></pre></td></tr></table></figure></li>
+<li>測試<code>flask-bcrypt</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># flask shell</span></span><br><span class="line"><span class="keyword">from</span> flask-bcrypt <span class="keyword">import</span> Bcrypt</span><br><span class="line"></span><br><span class="line">pw = <span class="string">&#x27;my_secret_password&#x27;</span></span><br><span class="line">pw1 = <span class="string">&#x27;my_secret_password&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 丟入hash function(hash value + salt)</span></span><br><span class="line">pw_hashed = bcrypt.generate_password_hash(pw)</span><br><span class="line"><span class="comment"># b&#x27;$2b$12$Uc6q9qQb2KAGU6HUOswcYOMSrI7o5MPD.jkPGQ3sNYO3riP1xhYEK&#x27;</span></span><br><span class="line">pw1_hashed = bcrypt.generate_password_hash(pw1)</span><br><span class="line"><span class="comment"># b&#x27;$2b$12$DOIdHeZ9e0xJZlLhz5NA7u77xYTW10ZUSD9yhrHfJvC1tHSZkiKV.&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 比較hash value, True</span></span><br><span class="line">bcrypt.check_password_hash(pw_hashed, pw)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>💡 Notice: 相同輸入的hash value結果是相同的，<code>bcrypt</code>在hash value加了salt(鹽)，讓結果看起來不同，驗證時仍會加入相同的salt保證驗證成功</p>
+</blockquote>
+</li>
+<li>在<code>users/models.py</code>修改<code>password</code>儲存長度並定義<code>Flask-Bcrypt</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># users/models.py</span></span><br><span class="line"><span class="keyword">from</span> flask_bcrypt <span class="keyword">import</span> Bcrypt</span><br><span class="line">bcrypt = Bcrypt()</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Users</span>(db.Model, UserMixin):</span><br><span class="line">    <span class="comment"># 改儲存hash value, 擴充欄位大小(20-&gt;255)</span></span><br><span class="line">    password = db.Column(db.String(<span class="number">255</span>), nullable=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># 略....</span></span><br></pre></td></tr></table></figure></li>
+<li>在<code>users/__init__.py</code>實體化<code>bcrypt</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># users/__init__.py</span></span><br><span class="line"><span class="keyword">from</span> app.models <span class="keyword">import</span> bcrypt</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_app</span>(<span class="params">configname=<span class="literal">None</span></span>):</span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    bcrypt.init_app(app)</span><br><span class="line">    <span class="comment"># 略...</span></span><br></pre></td></tr></table></figure></li>
+<li>在<code>users/routes.py</code>修改<code>register()</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># users/routes.py</span></span><br><span class="line"><span class="meta">@users_bp.route(<span class="params"><span class="string">&quot;/register&quot;</span>, methods=[<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">register</span>():</span><br><span class="line">    form = RegisterForm()</span><br><span class="line">    <span class="keyword">if</span> form.validate_on_submit():</span><br><span class="line">        username = form.username.data</span><br><span class="line">        email = form.email.data</span><br><span class="line">        <span class="comment"># 將表格輸入的password丟入hash function</span></span><br><span class="line">        password = bcrypt.generate_password_hash(form.password.data).decode(<span class="string">&#x27;UTF-8&#x27;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 略...</span></span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&quot;users.signin&quot;</span>))</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;register.html&quot;</span>, form=form)</span><br></pre></td></tr></table></figure></li>
+<li>在<code>users/routes.py</code>修改<code>register()</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># users/routes.py</span></span><br><span class="line"><span class="meta">@users_bp.route(<span class="params"><span class="string">&quot;/signin&quot;</span>, methods=[<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">signin</span>():</span><br><span class="line">    <span class="keyword">if</span> current_user.is_authenticated:</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&quot;main.index&quot;</span>))</span><br><span class="line">    form = SigninForm()</span><br><span class="line">    username = form.username.data</span><br><span class="line">    password = form.password.data</span><br><span class="line">    user = Users.query.filter_by(username=username).first()</span><br><span class="line">    <span class="keyword">if</span> form.is_submitted():</span><br><span class="line">        <span class="comment"># 比對hash function</span></span><br><span class="line">        <span class="keyword">if</span> form.validate() <span class="keyword">and</span> user <span class="keyword">and</span> bcrypt.check_password_hash(user.password.encode(<span class="string">&#x27;UTF-8&#x27;</span>), password):</span><br><span class="line">            login_user(user)</span><br><span class="line">            session[<span class="string">&quot;username&quot;</span>] = user.username</span><br><span class="line">            flash(<span class="string">&quot;歡迎回來&quot;</span>, category=<span class="string">&quot;success&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> redirect(url_for(<span class="string">&quot;main.index&quot;</span>))</span><br><span class="line">        flash(<span class="string">&quot;帳號或密碼錯誤，請重新輸入&quot;</span>, category=<span class="string">&quot;danger&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&quot;users.signin&quot;</span>))</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;sign-in.html&quot;</span>, form=form)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<blockquote>
+<p>💡 Notice: 因儲存在MySQL時，MySQL會將hash value錯誤識別成二進制，因此在<code>register()</code>中的password有使用<code>decode(&#39;UTF-8&#39;)</code>與<code>signin</code>中的<code>encode(&#39;UTF-8&#39;)</code>，將其強制改為字串型態</p>
+</blockquote>
+<p>如此一來我們已經藉由Flask-Bcrypt將密碼儲存為hash value，並且在使用者登入時仍可正常驗證密碼 👍🏻</p>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><ul>
+<li><input checked="" disabled="" type="checkbox"> Flask-Login 限制client存取特定頁面</li>
+<li><input checked="" disabled="" type="checkbox"> Hash Fuction(雜湊函數)、概念</li>
+<li><input checked="" disabled="" type="checkbox"> Flask-Bcrypt 將密碼轉為hash value、比對輸入與hash vlaue</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a target="_blank" rel="noopener" href="https://tech-blog.cymetrics.io/posts/jo/zerobased-cross-site-request-forgery/">零基礎資安系列（一）-認識 CSRF（Cross Site Request Forgery）</a><br><a target="_blank" rel="noopener" href="https://medium.com/tsungs-blog/day14-session%E8%88%87cookie%E5%B7%AE%E5%88%A5-eb7b4035a382">Day14-Session與Cookie差別</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/flask/" rel="tag"># flask</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/LeetCode/Easy/leetcode/977-SquaresOfSortedArray/" rel="prev" title="977. Squares of Sorted Array">
+                  <i class="fa fa-chevron-left"></i> 977. Squares of Sorted Array
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Python/Flask/flask/flask-7/" rel="next" title="Python Flask 概念與實作(七) - Blog功能">
+                  Python Flask 概念與實作(七) - Blog功能 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Muchian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>總字數：</span>
+    <span title="總字數">131k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"mcdaily","count":false,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

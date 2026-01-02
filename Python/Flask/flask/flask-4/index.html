@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"asfm4001.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言Flask內建的SQLite用作開發非常方便，但在較大型的專案中則相對來說效能較低，而Flask也支援連接其他種類的資料庫。MySQL是一個常見的資料庫管理系統，搭配docker可以更快的建立我們的DB server。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python Flask 概念與實作(四) - 連接資料庫">
+<meta property="og:url" content="https://asfm4001.github.io/Python/Flask/flask/flask-4/">
+<meta property="og:site_name" content="MC">
+<meta property="og:description" content="前言Flask內建的SQLite用作開發非常方便，但在較大型的專案中則相對來說效能較低，而Flask也支援連接其他種類的資料庫。MySQL是一個常見的資料庫管理系統，搭配docker可以更快的建立我們的DB server。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-4/container_status.png">
+<meta property="og:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-4/container_stop.png">
+<meta property="og:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-4/mysql_container.png">
+<meta property="og:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-4/mysql1.png">
+<meta property="og:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-4/mysql2.png">
+<meta property="article:published_time" content="2024-12-03T02:57:33.000Z">
+<meta property="article:modified_time" content="2025-02-07T02:30:32.151Z">
+<meta property="article:author" content="Muchian">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="flask">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-4/container_status.png">
+
+
+<link rel="canonical" href="https://asfm4001.github.io/Python/Flask/flask/flask-4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/Python/Flask/flask/flask-4/","path":"Python/Flask/flask/flask-4/","title":"Python Flask 概念與實作(四) - 連接資料庫"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python Flask 概念與實作(四) - 連接資料庫 | MC</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MC</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-with-Docker"><span class="nav-number">2.</span> <span class="nav-text">MySQL with Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Run-Container"><span class="nav-number">2.1.</span> <span class="nav-text">Run Container</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Stop-Container"><span class="nav-number">2.2.</span> <span class="nav-text">Stop Container</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Restart-Container"><span class="nav-number">2.3.</span> <span class="nav-text">Restart Container</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Create-User-Database"><span class="nav-number">2.4.</span> <span class="nav-text">Create User &amp; Database</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flask-Setting"><span class="nav-number">3.</span> <span class="nav-text">Flask Setting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">4.</span> <span class="nav-text">結論</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Muchian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">標籤</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/asfm4001" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;asfm4001" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="回到頂端">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://asfm4001.github.io/Python/Flask/flask/flask-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Muchian">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python Flask 概念與實作(四) - 連接資料庫 | MC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python Flask 概念與實作(四) - 連接資料庫
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-12-03 10:57:33" itemprop="dateCreated datePublished" datetime="2024-12-03T10:57:33+08:00">2024-12-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-02-07 10:30:32" itemprop="dateModified" datetime="2025-02-07T10:30:32+08:00">2025-02-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="文章字數">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">文章字數：</span>
+      <span>2.5k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Flask內建的SQLite用作開發非常方便，但在較大型的專案中則相對來說效能較低，而Flask也支援連接其他種類的資料庫。MySQL是一個常見的資料庫管理系統，搭配docker可以更快的建立我們的DB server。</p>
+<span id="more"></span>
+
+<hr>
+<p>目前 <em><strong>Python Flask 概念與實作</strong></em> 大致規劃為</p>
+<ol>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-0/">佈置環境</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-1/">Flask model運用(一)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-2/">Web server概念(二)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-3/">專案檔案分佈(三)</a></li>
+<li>[連接資料庫(四)]</li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-5/">渲染模板(五)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-6/">登入功能(六)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-7/">Blog功能(七)</a></li>
+</ol>
+<p>在開發過程中，Test(測試)其實也很重要，但礙於缺乏經驗，若之後有望的話再補上(專案打包、網站優化等等亦同)</p>
+<hr>
+<p>Flask中的SQLAlchemy預設是使用SQLite資料庫，而SQLite會在當前的資料夾建立一個<samp>&#x2F;instance&#x2F;data.db</samp>，使用SQLite作為開發固然好用，但終究不是部署用的資料庫，而MySQL是一個較常見的資料庫管理系統，當然你也可以選擇使用其他的管理系統…<br>先前在學習MySQL時曾在mac中安裝過MySQL，當時曾遇到一些問題，雖然已找到處理方法，但仍找不到根治的處方籤…</p>
+<blockquote>
+<p>開機後自動開啟MySQL server</p>
+</blockquote>
+<p>雖然說<strong>真的極少</strong>關機，通常是update或放到沒電才會遇到這類的問題，但電腦的記憶體被無預警的佔用也頗為困擾。</p>
+<blockquote>
+<p>圖形化介面無法正常開啟&#x2F;關閉</p>
+</blockquote>
+<p>安裝MySQL server後可以透過 <code>系統設定 &gt; MySQL</code> 查看server開啟&#x2F;關閉的狀況，但這裡僅能查看而已，Start&#x2F;Stop按鍵形同虛設，按下後完全無任何作用，做了許多功課後才得知在命令列下指令才能順利開啟&#x2F;關閉，而該指令至今也忘得一乾二凈了。</p>
+<h3 id="MySQL-with-Docker"><a href="#MySQL-with-Docker" class="headerlink" title="MySQL with Docker"></a>MySQL with Docker</h3><p>因緣際會下得知Docker技術，聽聞此技術是一門必修的課程，若能碰巧習得是再好不過了✌🏻。然後也不贅述如何安裝Docker，開啟docker後，下載MySQL鏡像檔。</p>
+<pre>docker pull mysql</pre>
+
+<h4 id="Run-Container"><a href="#Run-Container" class="headerlink" title="Run Container"></a>Run Container</h4><p>接著我們要使用這個鏡像檔將container跑起來，同時設定root的密碼。</p>
+<pre>docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=Test1234 -d mysql</pre>
+
+<ul>
+<li><code>-p &lt;本機port&gt;:&lt;container port&gt;</code> 設定連線到container的port</li>
+<li><code>-e &lt;環境變數&gt;=&lt;變數値&gt;</code> 設定環境變數</li>
+<li><code>-d</code> 在背景執行</li>
+</ul>
+<p>查看執行狀況</p>
+<pre>docker ps</pre>
+<p><img src="/imgs/pythonFlask/flask-4/container_status.png" alt="MySQL container"></p>
+<h4 id="Stop-Container"><a href="#Stop-Container" class="headerlink" title="Stop Container"></a>Stop Container</h4><p>若你要停止只需執行(但停止的container仍會佔用電腦中的內存)</p>
+<pre>docker stop <container ID></pre>
+
+<p>查看停止狀態的container執行</p>
+<pre>docker ps -al</pre>
+<p><img src="/imgs/pythonFlask/flask-4/container_stop.png" alt="stop container"></p>
+<h4 id="Restart-Container"><a href="#Restart-Container" class="headerlink" title="Restart Container"></a>Restart Container</h4><p>若要繼續運行停止狀態的container執行</p>
+<pre>docker restart containerID</pre>
+
+<h4 id="Create-User-Database"><a href="#Create-User-Database" class="headerlink" title="Create User &amp; Database"></a>Create User &amp; Database</h4><p>目前為止我們MySQL的container已經在背景運行，然而目前僅有root帳號，且還未建立任何資料庫供Flask使用。因此還需要</p>
+<ol>
+<li>建立可遠端連線的user</li>
+<li>建立資料庫</li>
+</ol>
+<p>首先我們要進入在背景執行中的container</p>
+<pre>docker exec -it containerID bash</pre>
+
+<p><img src="/imgs/pythonFlask/flask-4/mysql_container.png" alt="MySQL Container"></p>
+<ul>
+<li><code>exec</code> 進入執行中的container</li>
+<li><code>-i</code> 交互式操作</li>
+<li><code>-t</code> 建立虛擬終端機</li>
+<li><code>bash</code> 使用bash</li>
+</ul>
+<p>接著使用root帳號登入mysql，並使用剛才設定的密碼(Test1234)</p>
+<pre>mysql -u root -p</pre>
+
+<p><img src="/imgs/pythonFlask/flask-4/mysql1.png" alt="MySQL Login"></p>
+<p>新增一個名稱為devp的資料庫</p>
+<pre>CREATE DATABASE devp;</pre>
+
+<p>新增一個user並設定其連線位置</p>
+<pre>CREATE USER 'Devp001'@'%' IDENTIFIED BY 'devp001PW';</pre>
+
+<ul>
+<li><code>CREATE USER &#39;帳號&#39;@&#39;連線位置&#39; IDENTIFIED BY &#39;密碼&#39;;</code></li>
+<li><kbd>%</kbd> 允許此user在<samp>所有位置</samp>連線至MySQL</li>
+<li><kbd>localhost</kbd> 允許此user在<samp>本機</samp>連線至MySQL</li>
+<li><kbd>8.8.8.8</kbd> 允許此user IP為<samp>8.8.8.8</samp>時連線至MySQL</li>
+</ul>
+<p>設定user資料庫的存取權限</p>
+<pre>GRANT ALL PRIVILEGES ON *.* TO 'Devp001'@'%';</pre>
+
+<ul>
+<li><kbd>ALL PRIVILEGES</kbd> 包含增、改、刪所有權限</li>
+<li><kbd>SELECT</kbd>, <kbd>INSERT</kbd>, <kbd>UPDATE</kbd>, <kbd>DELETE</kbd>, <kbd>CREATE</kbd> 指定權限</li>
+</ul>
+<p><img src="/imgs/pythonFlask/flask-4/mysql2.png" alt="MySQL Setting"></p>
+<h3 id="Flask-Setting"><a href="#Flask-Setting" class="headerlink" title="Flask Setting"></a>Flask Setting</h3><p>目前MySQL已經成功建立，只差連線進去使用了！但python需要安裝PyMuSQL套件才可以操作MySQL</p>
+<pre>pip install pymysql</pre>
+
+<p>最後調整config.py中的SQLAlchemy URI就大功告成🥳</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># config.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Config</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="comment"># Database Configuration</span></span><br><span class="line">    <span class="comment"># SQLALCHEMY_DATABASE_URI = os.getenv(&quot;DATABASE_URI&quot;) or &#x27;sqlite:///data.db&#x27;</span></span><br><span class="line">    SQLALCHEMY_DATABASE_URI = <span class="string">&#x27;mysql+pymysql://Devp001:devp001PW@localhost:3306/devp&#x27;</span></span><br><span class="line">    SQLALCHEMY_TRACK_MODIFICATIONS = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>mysql+pymysql://&lt;帳號&gt;:&lt;密碼&gt;@&lt;主機IP&gt;:&lt;port&gt;/&lt;資料庫名稱&gt;</code></li>
+</ul>
+<p>然而在真正部署當中，資料庫的帳號、密碼、位置等資訊是相當重要且隱密的，通常我們不會將這些資訊寫在程式當中，若使用git很容易不小心公開到網路當中透露給其他人。因此，我們會將這些變數寫在環境變數當中，但礙於篇幅的關係下次會再介紹~</p>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><ul>
+<li><input checked="" disabled="" type="checkbox"> 使用docker建立MySQL container。</li>
+<li><input checked="" disabled="" type="checkbox"> 在MySQL中建立user與database。</li>
+<li><input checked="" disabled="" type="checkbox"> MySQL中結尾必須加上<kbd>;</kbd>❗️</li>
+<li><input checked="" disabled="" type="checkbox"> 在Flask使用MySQL作為資料庫。</li>
+<li><input disabled="" type="checkbox"> 將資料庫帳號、密碼、IP與port設定在環境變數中。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/flask/" rel="tag"># flask</a>
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+              <a href="/tags/docker/" rel="tag"># docker</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Python/Flask/flask/flask-2/" rel="prev" title="Python Flask 概念與實作(二) - Web server概念">
+                  <i class="fa fa-chevron-left"></i> Python Flask 概念與實作(二) - Web server概念
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Python/Flask/flask/flask-3/" rel="next" title="Python Flask 概念與實作(三) - 專案檔案分佈">
+                  Python Flask 概念與實作(三) - 專案檔案分佈 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Muchian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>總字數：</span>
+    <span title="總字數">131k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"mcdaily","count":false,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

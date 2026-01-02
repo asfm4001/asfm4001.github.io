@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"asfm4001.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言礙於面試時常被問「網路協定」，也惡補二專、碩班有聽沒有懂的網路知識，希望紀錄下來學以致用(避免下次再被問倒?)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Internet Protocol Suite(網路協定)">
+<meta property="og:url" content="https://asfm4001.github.io/Internet/internetProtocolSuite/">
+<meta property="og:site_name" content="MC">
+<meta property="og:description" content="前言礙於面試時常被問「網路協定」，也惡補二專、碩班有聽沒有懂的網路知識，希望紀錄下來學以致用(避免下次再被問倒?)">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2024-07-12T06:06:51.000Z">
+<meta property="article:modified_time" content="2024-07-14T14:06:06.884Z">
+<meta property="article:author" content="Muchian">
+<meta property="article:tag" content="internet">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://asfm4001.github.io/Internet/internetProtocolSuite/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/Internet/internetProtocolSuite/","path":"Internet/internetProtocolSuite/","title":"Internet Protocol Suite(網路協定)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Internet Protocol Suite(網路協定) | MC</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MC</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B1%9D%E9%9D%9E%E9%AD%9A%E7%84%89%E7%9F%A5%E9%AD%9A%E4%B9%8B%E6%A8%82"><span class="nav-number">2.</span> <span class="nav-text">汝非魚焉知魚之樂?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E6%BA%9D%E7%9A%84%E5%9A%B4%E9%87%8D%E6%80%A7"><span class="nav-number">3.</span> <span class="nav-text">代溝的嚴重性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E9%9A%94%E5%85%A9%E5%9C%B0%E7%9A%844%E6%A8%93%E4%BD%8F%E6%88%B6"><span class="nav-number">4.</span> <span class="nav-text">相隔兩地的4樓住戶</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">5.</span> <span class="nav-text">結語</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Muchian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">標籤</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/asfm4001" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;asfm4001" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="回到頂端">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://asfm4001.github.io/Internet/internetProtocolSuite/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Muchian">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Internet Protocol Suite(網路協定) | MC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Internet Protocol Suite(網路協定)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-07-12 14:06:51" itemprop="dateCreated datePublished" datetime="2024-07-12T14:06:51+08:00">2024-07-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2024-07-14 22:06:06" itemprop="dateModified" datetime="2024-07-14T22:06:06+08:00">2024-07-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Internet/" itemprop="url" rel="index"><span itemprop="name">Internet</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="文章字數">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">文章字數：</span>
+      <span>1.6k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>礙於面試時常被問「網路協定」，也惡補二專、碩班有聽沒有懂的網路知識，希望紀錄下來學以致用(避免下次再被問倒?)</p>
+<span id="more"></span>
+
+<p>當我在google搜尋「API 教學」時，無意間看到<a target="_blank" rel="noopener" href="https://miahsuwork.medium.com/%E7%AC%AC%E5%85%AD%E9%80%B1-%E7%B6%B2%E8%B7%AF%E5%9F%BA%E7%A4%8E-tcp-ip-f89cc09f1f36">網路基礎TCP&#x2F;IP</a>這篇文章，但仍覺得沒有完全看懂，也就順藤摸瓜找到<a target="_blank" rel="noopener" href="https://hulitw.medium.com/learning-tcp-ip-http-via-sending-letter-5d3299203660">從傳紙條輕鬆學習基本網路概念</a>。</p>
+<p>首先，我腦中的網路大概是這個形式</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/LW6OeOK"  ><a target="_blank" rel="noopener" href="//imgur.com/a/LW6OeOK">UserRequest</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+但是實際上，你在Browser(瀏覽器)中輸入URL(網址)時，Browser會向DNS(網域名稱系統)查詢對應的IP。這時Browser才會向Server發出Resquest
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/BcQC9gQ"  ><a target="_blank" rel="noopener" href="//imgur.com/a/BcQC9gQ">UserToDNS</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
+<h3 id="汝非魚焉知魚之樂"><a href="#汝非魚焉知魚之樂" class="headerlink" title="汝非魚焉知魚之樂?"></a>汝非魚焉知魚之樂?</h3><p>然而，在如深似海的公開網路中，如何知曉Server是否「真的」收到你的Resquest?這時我們需要一個共通的共識「Three-Way Handshake(三方交握)」</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/mJV9JQE"  ><a target="_blank" rel="noopener" href="//imgur.com/a/mJV9JQE">ThreeWayHandshake</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+這個共識可以確定：
+
+<ol>
+<li>User「知道Server有收到訊息」 -&gt; Response</li>
+<li>Server「知道User有收到訊息」 -&gt; Roger</li>
+</ol>
+<p>這個共識就是TCP協定，可以確保雙方瞭解另一方接收狀況。</p>
+<h3 id="代溝的嚴重性"><a href="#代溝的嚴重性" class="headerlink" title="代溝的嚴重性"></a>代溝的嚴重性</h3><p>雖然確定Server有收到訊息，但內容沒有統一的格式，導致傳訊息都看心情來寫、收訊息一團亂，沒有辦法非常直觀地找到需要的資訊。因此，我們需要說好使用哪一種協定、協定的規格是什麼？舉例來說，我向Server發送Request時特別指定使用「Http協定(80 port)」，並依照協定的規範撰寫訊息。</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/pMdOsnt"  ><a target="_blank" rel="noopener" href="//imgur.com/a/pMdOsnt">HTTP</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
+<p>在Http協定中，將內文區分header與body<br>Client to Server:<br>header包含action(請求動作)與IP(目標地址)，而body則包含其他東西<br>其中action使用這些代表User向Server請求的動作</p>
+<ol>
+<li>GET: 取得資訊</li>
+<li>POST: 新增內容</li>
+<li>DELETE: 刪除內容</li>
+<li>PUT: 更新內容</li>
+</ol>
+<p>Server to Client:<br>header包含status(狀態)與IP(目標地址)，body則包含Client請求的內容<br>其中status使用這些數字代表Server回覆User的結果</p>
+<ol>
+<li>200 OK: 成功接收</li>
+<li>400 Error: Bad Requset錯誤請求(詳述錯誤內容)</li>
+<li>404 Error: Not Found找不到資源</li>
+</ol>
+<p>如此一來，雙方既可以保證收到對方的訊息，也有一個正式的撰寫規範。<br>當然，一個Server可以同時有好幾種服務，舉凡FTP(21 port)、Https(443 port)等等。這些port(埠)分別代表不同的服務，但有些特殊的Server(或是這是你專屬的Server)可以自己指定port代表哪些服務。</p>
+<h3 id="相隔兩地的4樓住戶"><a href="#相隔兩地的4樓住戶" class="headerlink" title="相隔兩地的4樓住戶"></a>相隔兩地的4樓住戶</h3><p>現在，我們可以來說IPS是如何將通訊過程分成4 layer(層)架構的</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/FpxyYZm"  ><a target="_blank" rel="noopener" href="//imgur.com/a/FpxyYZm">TCP/IP 4 Layer</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+由最下層開始說，
+Network Access(連接層): 決定你們是傳紙條還是刻在石板(再丟給對方?)
+Internet(網路層): 決定收/發方地址的形式，現在主流是IPv4，就是大家常見的<code>192.168.0.1</code>
+TranSport(傳輸層): 決定是否確保接收，如TCP有點類似雙掛號的概念，而UDP則像急件
+Appliction(應用層): 決定內容的格式，像是匯款單上的數字就一定是大寫<code>壹</code>、<code>貳</code>、<code>參</code>等等
+
+<p>當然，Client與Server之間並非一定使用哪種協定，而是看實際使用的狀況去決定。例如在live直播時，你並不會想要收到Server的每一幀畫面，即使漏掉幾幀畫面也不影響大局，最重要的是看到即時的畫面，這時我們就會使用UDP協定取代前面所述的TCP「Three-Way Handshake」。UDP相對TCP更快速，但並不保證可以成功接收每一則訊息。</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>最後，其實我以前學的網路協定是7 layer的IOS模型，礙於七層太難解釋，未來有機會再做研究(?)<br>但下一個目標是實作HTTP協定。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/internet/" rel="tag"># internet</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Git/git-command/" rel="prev" title="Git指令">
+                  <i class="fa fa-chevron-left"></i> Git指令
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Python/Flask/flask/flask-0/" rel="next" title="Python Flask 概念與實作 - 佈置環境">
+                  Python Flask 概念與實作 - 佈置環境 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Muchian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>總字數：</span>
+    <span title="總字數">131k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"mcdaily","count":false,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

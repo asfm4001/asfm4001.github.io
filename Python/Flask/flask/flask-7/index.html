@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"asfm4001.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言Flask常用的幾個功能幾乎都介紹完了，而且Python Flask 概念與實作這個系列也來到最後一節，這節我們來實作一個Blog網站。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python Flask 概念與實作(七) - Blog功能">
+<meta property="og:url" content="https://asfm4001.github.io/Python/Flask/flask/flask-7/">
+<meta property="og:site_name" content="MC">
+<meta property="og:description" content="前言Flask常用的幾個功能幾乎都介紹完了，而且Python Flask 概念與實作這個系列也來到最後一節，這節我們來實作一個Blog網站。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-7/blog_index.png">
+<meta property="og:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-7/pagination_1.png">
+<meta property="og:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-7/pagination_2.png">
+<meta property="og:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-7/pagination_3.png">
+<meta property="article:published_time" content="2025-05-06T05:31:40.000Z">
+<meta property="article:modified_time" content="2025-05-14T14:00:27.156Z">
+<meta property="article:author" content="Muchian">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="flask">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://asfm4001.github.io/imgs/pythonFlask/flask-7/blog_index.png">
+
+
+<link rel="canonical" href="https://asfm4001.github.io/Python/Flask/flask/flask-7/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/Python/Flask/flask/flask-7/","path":"Python/Flask/flask/flask-7/","title":"Python Flask 概念與實作(七) - Blog功能"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python Flask 概念與實作(七) - Blog功能 | MC</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MC</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Framework"><span class="nav-number">2.</span> <span class="nav-text">Framework</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Blog"><span class="nav-number">3.</span> <span class="nav-text">Blog</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Home-page-of-blog"><span class="nav-number">3.1.</span> <span class="nav-text">Home page of blog</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Create-new-post"><span class="nav-number">3.2.</span> <span class="nav-text">Create new post</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Edit-post"><span class="nav-number">3.3.</span> <span class="nav-text">Edit post</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Delete-post"><span class="nav-number">3.4.</span> <span class="nav-text">Delete post</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pagination-of-index"><span class="nav-number">3.5.</span> <span class="nav-text">Pagination of index</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">4.</span> <span class="nav-text">結論</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Muchian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">標籤</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/asfm4001" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;asfm4001" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="回到頂端">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://asfm4001.github.io/Python/Flask/flask/flask-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Muchian">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python Flask 概念與實作(七) - Blog功能 | MC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python Flask 概念與實作(七) - Blog功能
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-05-06 13:31:40" itemprop="dateCreated datePublished" datetime="2025-05-06T13:31:40+08:00">2025-05-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-05-14 22:00:27" itemprop="dateModified" datetime="2025-05-14T22:00:27+08:00">2025-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="文章字數">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">文章字數：</span>
+      <span>13k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Flask常用的幾個功能幾乎都介紹完了，而且<strong>Python Flask 概念與實作</strong>這個系列也來到最後一節，這節我們來實作一個Blog網站。</p>
+<span id="more"></span>
+
+<hr>
+<p>目前 <em><strong>Python Flask 概念與實作</strong></em> 大致規劃為</p>
+<ol>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-0/">佈置環境</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-1/">Flask model運用(一)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-2/">Web server概念(二)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-3/">專案檔案分佈(三)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-4/">連接資料庫(四)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-5/">渲染模板(五)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-6/">登入功能(六)</a></li>
+<li>Blog功能(七)</li>
+</ol>
+<p>在開發過程中，Test(測試)其實也很重要，但礙於缺乏經驗，若之後有望的話再補上(專案打包、網站優化等等亦同)</p>
+<hr>
+<h3 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h3><p>首先，我們必須來定義一下網站架構與功能，關於登入功能在上一節<a href="https://asfm4001.github.io/Python/Flask/pythonFlask/flask-6/">登入功能(六)</a>已經介紹完，這裡就不多做介紹。</p>
+<p>在這節當中，我們當前的專案配置如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── requirements.txt</span><br><span class="line">├── config.py</span><br><span class="line">├── run.py</span><br><span class="line">├── app</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── models.py</span><br><span class="line">│   ├── static</span><br><span class="line">│   └── templates</span><br><span class="line">│       ├── base.html</span><br><span class="line">│       ├── footer.html</span><br><span class="line">│       └── navbar.html</span><br><span class="line">└── instance</span><br><span class="line">    └── devp-data.sqlite</span><br></pre></td></tr></table></figure>
+
+<p>在我們定義的架構中，一般使用者可以訪問<code>index.html</code>(首頁)與<code>blog.html</code>部落格查看當前所有的文章。</p>
+<p>而已登入的使用者可以新增、修改、刪除<strong>自己</strong>的文章</p>
+<ul>
+<li><code>/blog</code> 所有文章列表<ul>
+<li><code>/blog/post/1, 2, 3...</code> 指定文章</li>
+<li><code>/blog/create</code> 新增文章</li>
+<li><code>/blog/edit/1, 2, 3...</code> 編輯文章</li>
+<li><code>/blog/delete/1, 2, 3...</code> 刪除文章</li>
+</ul>
+</li>
+<li><code>/login</code></li>
+</ul>
+<h3 id="Blog"><a href="#Blog" class="headerlink" title="Blog"></a>Blog</h3><h4 id="Home-page-of-blog"><a href="#Home-page-of-blog" class="headerlink" title="Home page of blog"></a>Home page of blog</h4><p>首先，我們先新增<code>Post</code>(文章)的model，接著建立blog的首頁。</p>
+<ol>
+<li><p>在<code>models.py</code>新增<code>post</code> model</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># models.py</span></span><br><span class="line"><span class="comment"># 略...</span></span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Post</span>(db.Model):</span><br><span class="line"><span class="built_in">id</span> = db.Column(db.Integer, primary_key=<span class="literal">True</span>)</span><br><span class="line">user_id = db.Column(db.Integer, db.ForeignKey(<span class="string">&quot;user.id&quot;</span>), nullable=<span class="literal">False</span>)</span><br><span class="line"><span class="comment"># 設定foreign key, 與User中的id關聯(table name預設為class name)</span></span><br><span class="line">title = db.Column(db.String(<span class="number">20</span>), unique=<span class="literal">True</span>, nullable=<span class="literal">False</span>)</span><br><span class="line">created_time = db.Column(db.DateTime, default=datetime.now())</span><br><span class="line">updated_time = db.Column(db.DateTime, default=datetime.now())    <span class="comment"># 更改時更新時間</span></span><br><span class="line">context = db.Column(db.String(<span class="number">200</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&#x27;&lt;Post <span class="subst">&#123;self.title&#125;</span>&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span>(db.Model, UserMixin):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer, primary_key=<span class="literal">True</span>)</span><br><span class="line">    username = db.Column(db.String(<span class="number">20</span>), unique=<span class="literal">True</span>, nullable=<span class="literal">False</span>)</span><br><span class="line">    password = db.Column(db.String(<span class="number">20</span>), nullable=<span class="literal">False</span>)</span><br><span class="line">    posts = db.relationship(<span class="string">&quot;Post&quot;</span>, backref=db.backref(<span class="string">&quot;author&quot;</span>, lazy=<span class="literal">True</span>))</span><br><span class="line">    <span class="comment"># relationship(tableName, 反向關聯)</span></span><br><span class="line">    <span class="comment"># backref(反向關聯變數名稱, 單向關聯) e.g. user無post則不創建post table</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&#x27;&lt;User <span class="subst">&#123;self.username&#125;</span>&gt;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>使用<code>flask shell</code>測試</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># flask shell</span></span><br><span class="line">User.query.<span class="built_in">all</span>()    <span class="comment"># [&lt;User myusername&gt;]</span></span><br><span class="line">u = User.query.<span class="built_in">all</span>()[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">Post.query.<span class="built_in">all</span>()    <span class="comment"># [], 還未建立post</span></span><br><span class="line"></span><br><span class="line">p1 = Post(user_id=u.<span class="built_in">id</span>, title=<span class="string">&#x27;my 1st post&#x27;</span>, context=<span class="string">&#x27;there is nothing.&#x27;</span>)</span><br><span class="line">db.session.add(p1)</span><br><span class="line">db.commit()</span><br><span class="line"></span><br><span class="line">p2 = Post(user_id=u.<span class="built_in">id</span>, title=<span class="string">&#x27;my 2nd post&#x27;</span>, context=<span class="string">&#x27;there is nothing.&#x27;</span>)</span><br><span class="line">db.session.add(p2)</span><br><span class="line">db.commit()</span><br><span class="line"></span><br><span class="line">Post.query.<span class="built_in">all</span>()    <span class="comment"># [&lt;Post my 1st post&gt;, &lt;Post my 2nd post&gt;]</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新增<code>/blog</code>資料夾，並新增<code>__init__.py</code></p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /blog/__init__.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Blueprint</span><br><span class="line"></span><br><span class="line">blog_bp = Blueprint(<span class="string">&#x27;blog&#x27;</span>, __name__, template_folder=<span class="string">&#x27;templates&#x27;</span>)</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> routes</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新增<code>routes.py</code></p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /blog/routes.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> render_template</span><br><span class="line"><span class="keyword">from</span> app.models <span class="keyword">import</span> Post</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> blog_bp</span><br><span class="line"></span><br><span class="line"><span class="meta">@blog_bp.route(<span class="params"><span class="string">&#x27;/index&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    posts = Post.query.order_by(Post.created_time.desc()).<span class="built_in">all</span>()</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>, posts=posts)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在<code>blog</code>中新增<code>index.html</code></p>
+ <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- /blog/templates/index.html --&gt;</span></span><br><span class="line">&#123;% extends &quot;base.html&quot; %&#125;</span><br><span class="line"><span class="comment">&lt;!-- 略... --&gt;</span></span><br><span class="line"></span><br><span class="line">&#123;% block container %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container px-4 px-lg-5&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;row gx-4 gx-lg-5 justify-content-center&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col-md-10 col-lg-8 col-xl-7&quot;</span>&gt;</span></span><br><span class="line">                &#123;% for post in posts %&#125;</span><br><span class="line">                    <span class="comment">&lt;!-- Post preview--&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;post-preview&quot;</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;blog.post&#x27;, id=post.id) &#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">h2</span> <span class="attr">class</span>=<span class="string">&quot;post-title&quot;</span>&gt;</span>&#123;&#123; post.title &#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;post-meta&quot;</span>&gt;</span></span><br><span class="line">                            Posted by &#123;&#123; post.author.username &#125;&#125;</span><br><span class="line">                            on &#123;&#123; post.created_time.strftime(&quot;%B %d, %Y&quot;) &#125;&#125;</span><br><span class="line">                        <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">                    <span class="comment">&lt;!-- Divider--&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">hr</span> <span class="attr">class</span>=<span class="string">&quot;my-4&quot;</span> /&gt;</span></span><br><span class="line">                &#123;% endfor %&#125;</span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改<code>__init__.py</code>，新增blueprint</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># __init__.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> config</span><br><span class="line"><span class="keyword">from</span> app.models <span class="keyword">import</span> db, bootstrap, migrate</span><br><span class="line"><span class="keyword">from</span> .blog <span class="keyword">import</span> blog_bp</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_app</span>(<span class="params">config_name=<span class="string">&#x27;devp&#x27;</span></span>):</span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.config.from_object(config[config_name])</span><br><span class="line"></span><br><span class="line">    bootstrap.init_app(app)</span><br><span class="line">    db.init_app(app)</span><br><span class="line">    migrate.init_app(app, db)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># create db</span></span><br><span class="line">    <span class="keyword">with</span> app.app_context():</span><br><span class="line">        db.create_all()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># blueprint routes</span></span><br><span class="line">    app.register_blueprint(blog_bp, url_prefix=<span class="string">&#x27;/blog&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> app</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>此時訪問<a target="_blank" rel="noopener" href="http://localhost:5000/blog">這裡</a>，可以看到你的blog<br><img src="/imgs/pythonFlask/flask-7/blog_index.png" alt="index page of blog"></p>
+<h4 id="Create-new-post"><a href="#Create-new-post" class="headerlink" title="Create new post"></a>Create new post</h4><p>接著，我們要建立一個新增<code>Post</code>的頁面</p>
+<ol>
+<li><p>使用WTForm建立表單，可以參照在<a href="https://asfm4001.github.io/Python/Flask/flask/flask-wtf/">使用 WTForm 快速建立表單 feet. flask檔案佈局 &amp; bootstrap</a>方式，在<code>forms.py</code>新增表單</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># forms.py</span></span><br><span class="line"><span class="comment"># 略...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">EditPostForm</span>(<span class="title class_ inherited__">FlaskForm</span>):</span><br><span class="line">title = StringField(<span class="string">&quot;Title&quot;</span>, validators=[DataRequired(), Length(<span class="built_in">min</span>=<span class="number">1</span>, <span class="built_in">max</span>=<span class="number">30</span>)])</span><br><span class="line">context = TextAreaField(<span class="string">&quot;Context&quot;</span>, validators=[DataRequired(), Length(<span class="built_in">max</span>=<span class="number">200</span>)])</span><br><span class="line">submit = SubmitField(<span class="string">&quot;Post&quot;</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p>在<code>routes.py</code>新增路徑</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># blog/routes.py</span></span><br><span class="line"><span class="comment"># 略...</span></span><br><span class="line"><span class="keyword">from</span> flask_login <span class="keyword">import</span> login_required, current_user</span><br><span class="line"><span class="keyword">from</span> app.models <span class="keyword">import</span> db, Post</span><br><span class="line"><span class="keyword">from</span> app.forms <span class="keyword">import</span> EditPostForm</span><br><span class="line"></span><br><span class="line"><span class="meta">@blog_bp.route(<span class="params"><span class="string">&#x27;/create&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="meta">@login_required</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create</span>():</span><br><span class="line">    form = EditPostForm()</span><br><span class="line">    <span class="keyword">if</span> form.validate_on_submit():</span><br><span class="line">        title = form.title.data</span><br><span class="line">        context = form.context.data</span><br><span class="line">        post = Post(user_id=current_user.<span class="built_in">id</span>, title=title, context=context)</span><br><span class="line">        db.session.add(post)</span><br><span class="line">        db.session.commit()</span><br><span class="line">        flash(<span class="string">&quot;Create post success.&quot;</span>, category=<span class="string">&quot;success&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;blog.index&#x27;</span>)) </span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;edit_post.html&#x27;</span>, form=form)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新增<code>edit_post.html</code></p>
+ <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- blog/templates/edit_post.html --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 略... --&gt;</span></span><br><span class="line">&#123;% from &#x27;bootstrap4/form.html&#x27; import render_field %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br><span class="line">    &#123;&#123; form.csrf_token() &#125;&#125;</span><br><span class="line">    &#123;&#123; render_field(form.title) &#125;&#125;</span><br><span class="line">    &#123;&#123; render_field(form.context, style=&#x27;height: 150px;&#x27;) &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">    &#123;&#123; render_field(form.submit) &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>完成後就可以到<a target="_blank" rel="noopener" href="http://localhost:5000/blog/create">這裡</a>新增post了!!(必須登入)</p>
+<h4 id="Edit-post"><a href="#Edit-post" class="headerlink" title="Edit post"></a>Edit post</h4><p>在編輯前我們需要檢查下列幾點事項</p>
+<ul>
+<li>欲更改的post是否存在</li>
+<li>欲更改的post作者是否為current user<br>若滿足以上兩點則將data載入<code>edit_post.html</code>，否則轉到<code>blog.index</code>並顯示警示訊息<br>更新的同時，除了要更新內容外，也須更新<code>updated_time</code></li>
+</ul>
+<ol>
+<li>修改<code>models.py</code>，新增<code>update_time()</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># models.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Post</span>(db.Model):</span><br><span class="line">    <span class="comment"># 略...</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">update_time</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="variable language_">self</span>.updated_time = datetime.now()</span><br></pre></td></tr></table></figure></li>
+<li>修改<code>blog/index.html</code>，增加修改時間 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- blog/templates/index.html --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 略... --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;post-meta&quot;</span>&gt;</span></span><br><span class="line">    Posted by</span><br><span class="line">    &#123;&#123; post.author.username &#125;&#125;</span><br><span class="line">    on &#123;&#123; post.created_time.strftime(&quot;%B %d, %Y&quot;) &#125;&#125;.</span><br><span class="line">    <span class="comment">&lt;!-- 新增&#x27;修改時間&#x27; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">small</span>&gt;</span>Updated on </span><br><span class="line">        &#123;&#123; post.updated_time.strftime(&quot;%B %d, %Y %H:%M&quot;) &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">small</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>修改<code>routes.py</code>，新增<code>edit()</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># blog/routes.py</span></span><br><span class="line"><span class="meta">@blog_bp.route(<span class="params"><span class="string">&#x27;/edit/&lt;int:id&gt;&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="meta">@login_required</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">edit</span>(<span class="params"><span class="built_in">id</span></span>):</span><br><span class="line">    post = Post.query.filter_by(<span class="built_in">id</span>=<span class="built_in">id</span>).first()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> post <span class="keyword">or</span> current_user != post.author: <span class="comment"># 若文章不存在或不是該文章作者, 跳出</span></span><br><span class="line">        flash(<span class="string">&quot;The post is not exist or it&#x27;s not permitted.&quot;</span>, category=<span class="string">&quot;danger&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;blog.index&#x27;</span>))</span><br><span class="line">    form = EditPostForm()</span><br><span class="line">    <span class="keyword">if</span> form.validate_on_submit():   <span class="comment"># 送出後, 載入input data</span></span><br><span class="line">        post.title = form.title.data</span><br><span class="line">        post.context = form.context.data</span><br><span class="line">        post.update_time()          <span class="comment"># 更新&#x27;修改時間&#x27;</span></span><br><span class="line">        db.session.add(post)</span><br><span class="line">        db.session.commit()</span><br><span class="line">        flash(<span class="string">&quot;The post updated success.&quot;</span>, category=<span class="string">&quot;success&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&quot;blog.index&quot;</span>))</span><br><span class="line">    form.title.data = post.title</span><br><span class="line">    form.context.data = post.context</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;edit_post.html&#x27;</span>, form=form)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>修改完成後在<code>/blog/edit/&lt;id&gt;</code>就可以修改當前帳號的post!!</p>
+<h4 id="Delete-post"><a href="#Delete-post" class="headerlink" title="Delete post"></a>Delete post</h4><ol>
+<li><p>修改<code>routest.py</code>，修改<code>update()</code></p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># blog/routes.py</span></span><br><span class="line"><span class="meta">@blog_bp.route(<span class="params"><span class="string">&#x27;/edit/&lt;int:id&gt;&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="meta">@login_required</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">edit</span>(<span class="params"><span class="built_in">id</span></span>):</span><br><span class="line">    <span class="comment"># 略...</span></span><br><span class="line">    <span class="comment"># 新增&#x27;current_post_id&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;edit_post.html&#x27;</span>, form=form, current_post_id=post.<span class="built_in">id</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改<code>routes.py</code>，新增<code>delete()</code></p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># blog/routes.py</span></span><br><span class="line"><span class="meta">@blog_bp.route(<span class="params"><span class="string">&#x27;/delete/&lt;int:id&gt;&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="meta">@login_required</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">delete</span>(<span class="params"><span class="built_in">id</span></span>):</span><br><span class="line">    post = Post.query.filter_by(<span class="built_in">id</span>=<span class="built_in">id</span>).first()</span><br><span class="line">    <span class="keyword">if</span> post <span class="keyword">and</span> current_user == post.author:</span><br><span class="line">        db.session.delete(post)</span><br><span class="line">        db.session.commit()</span><br><span class="line">        flash(<span class="string">&quot;The post is delete.&quot;</span>, category=<span class="string">&quot;success&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        flash(<span class="string">&quot;The post is not exist or it&#x27;s not permitted.&quot;</span>, category=<span class="string">&quot;danger&quot;</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;blog.index&#x27;</span>))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改<code>edit_post.html</code></p>
+ <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- blog/templates/edit_post.html --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 略... --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br><span class="line">    &#123;&#123; form.csrf_token() &#125;&#125;</span><br><span class="line">    &#123;&#123; render_field(form.title) &#125;&#125;</span><br><span class="line">    &#123;&#123; render_field(form.context, style=&#x27;height: 150px;&#x27;) &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">    &#123;&#123; render_field(form.submit) &#125;&#125;</span><br><span class="line">    <span class="comment">&lt;!-- 新增刪除按鈕 --&gt;</span></span><br><span class="line">    &#123;% if current_post_id %&#125;</span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-danger&quot;</span> <span class="attr">onclick</span>=<span class="string">&quot;window.location.href=&#x27;&#123;&#123; url_for(&#x27;blog.delete&#x27;, id=current_post_id) &#125;&#125;&#x27;&quot;</span>&gt;</span></span><br><span class="line">        Delete</span><br><span class="line">        <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="Pagination-of-index"><a href="#Pagination-of-index" class="headerlink" title="Pagination of index"></a>Pagination of index</h4><p>隨著我們的文章增加，<code>index</code>頁面會越來越長，SQLAlchemy也提供分頁功能，讓我們實現Pagination(頁籤)的功能。</p>
+<ol>
+<li><p>當前的文章有點太少，我們先新增多筆<code>Post</code></p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># flask shell</span></span><br><span class="line">u = User.query.<span class="built_in">all</span>()[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">10</span>):</span><br><span class="line">    p = Post(user_id=u.<span class="built_in">id</span>, title=<span class="string">f&#x27;New post No.<span class="subst">&#123;i&#125;</span>&#x27;</span>, context=<span class="string">&#x27;nothing&#x27;</span>)</span><br><span class="line">    db.session.add(p)</span><br><span class="line">    db.session.commit()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>先測試一下SQLAlchemy的paginate功能</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># flask shell</span></span><br><span class="line">page = <span class="number">1</span>    <span class="comment"># 當前頁面</span></span><br><span class="line"></span><br><span class="line">posts = Post.query.order_by(Post.created_time.desc()).paginate(page=page, per_page=<span class="number">5</span>, error_out=<span class="literal">False</span>)</span><br><span class="line"><span class="comment"># page: 初始頁面</span></span><br><span class="line"><span class="comment"># per_page: 每一頁的文章數</span></span><br><span class="line"><span class="comment"># error_out: 錯誤訊息顯示</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># post數量</span></span><br><span class="line">posts.total       <span class="comment"># 13</span></span><br><span class="line"><span class="comment"># page數量</span></span><br><span class="line">posts.pages       <span class="comment"># 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 判斷是否存在前、後一頁</span></span><br><span class="line">posts.has_prev    <span class="comment"># False</span></span><br><span class="line">posts.has_next    <span class="comment"># True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 存取前、後一頁</span></span><br><span class="line">posts.prev_num    <span class="comment"># null </span></span><br><span class="line">posts.next_num    <span class="comment"># 2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改<code>routes.py</code></p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># blog/routes.py</span></span><br><span class="line"><span class="comment"># 略...</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request</span><br><span class="line"></span><br><span class="line"><span class="meta">@blog_bp.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="comment"># 設定初始page</span></span><br><span class="line">    page = request.args.get(<span class="string">&#x27;page&#x27;</span>, <span class="number">1</span>, <span class="built_in">type</span>=<span class="built_in">int</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># posts = Post.query.order_by(Post.created_time.desc()).all()</span></span><br><span class="line">    posts = Post.query.order_by(Post.updated_time.desc()).paginate(page=page, per_page=<span class="number">5</span>, error_out=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># posts已從&lt;list&gt;改為&lt;object&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 傳入page參數</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>, page=page, posts=posts)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改<code>index.html</code></p>
+ <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- blog/index.html --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 略... --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">aria-label</span>=<span class="string">&quot;Page navigation example&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;pagination justify-content-center&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 前一頁 --&gt;</span></span><br><span class="line">        &#123;% if posts.has_prev %&#125;</span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;page-item&quot;</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- 傳入page = posts.prev_num --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;page-link&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;blog.index&#x27;, page=posts.prev_num) &#125;&#125;&quot;</span> <span class="attr">aria-label</span>=<span class="string">&quot;Previous&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">span</span> <span class="attr">aria-hidden</span>=<span class="string">&quot;true&quot;</span>&gt;</span><span class="symbol">&amp;laquo;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        &#123;% endif %&#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 使用for顯示所有頁面 --&gt;</span></span><br><span class="line">        &#123;% for i in range(1, posts.pages+1) %&#125;</span><br><span class="line">            <span class="comment">&lt;!-- 傳入page = i --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;page-item&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;page-link&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;blog.index&#x27;, page=i) &#125;&#125;&quot;</span>&gt;</span>&#123;&#123; i &#125;&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        &#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 後一頁 --&gt;</span></span><br><span class="line">        &#123;% if posts.has_next %&#125;</span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;page-item&quot;</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- 傳入page = posts.next_num --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;page-link&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;blog.index&#x27;, page=posts.next_num) &#125;&#125;&quot;</span> <span class="attr">aria-label</span>=<span class="string">&quot;Next&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">span</span> <span class="attr">aria-hidden</span>=<span class="string">&quot;true&quot;</span>&gt;</span><span class="symbol">&amp;raquo;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        &#123;% endif %&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>修改完後大概是這個效果</p>
+<p><img src="/imgs/pythonFlask/flask-7/pagination_1.png" alt="Pagination of index"></p>
+<p>然而隨著文章越來越多，Pagination會超出範圍<br>5. 先步驟1一樣新增文章，但這次新增再多一點<br>    <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># flask shell</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">11</span>,<span class="number">100</span>):</span><br><span class="line">    p = Post(user_id=u.<span class="built_in">id</span>, title=<span class="string">f&#x27;New post No.<span class="subst">&#123;i&#125;</span>&#x27;</span>, context=<span class="string">&#x27;nothing&#x27;</span>)</span><br><span class="line">    db.session.add(p)</span><br><span class="line">    db.session.commit()</span><br><span class="line"></span><br><span class="line">posts.total <span class="comment"># 102</span></span><br><span class="line">posts.page  <span class="comment"># 12</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="/imgs/pythonFlask/flask-7/pagination_2.png" alt="A lot of Pagination of index"></p>
+<p>雖然看起來還沒超出範圍，但若使用像手機這類較小的顯示器很容易超出範圍，並且也不太美觀</p>
+<ol start="6">
+<li><p>SQLAlchemy的<code>paginate</code>還提供方便的功能，先來測試看看</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># flask shell</span></span><br><span class="line">page = <span class="number">1</span>    <span class="comment"># 當前頁面</span></span><br><span class="line">posts = Post.query.order_by(Post.updated_time.desc()).paginate(page=page, per_page=<span class="number">5</span>, error_out=<span class="literal">False</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> posts.iter_pages():</span><br><span class="line">    <span class="built_in">print</span>(i)</span><br><span class="line"><span class="comment"># 1, 2, 3, 4, 5, None, 20, 21</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># iter_pages()內參數預設值:</span></span><br><span class="line"><span class="comment"># left_edge = 2        起點數量</span></span><br><span class="line"><span class="comment"># left_current = 2     當前向左數量</span></span><br><span class="line"><span class="comment"># right_edge = 5       當前向左數量</span></span><br><span class="line"><span class="comment"># right_current = 2    終點數量</span></span><br><span class="line"></span><br><span class="line">page = <span class="number">12</span>    <span class="comment"># 當前頁面</span></span><br><span class="line">posts = Post.query.order_by(Post.updated_time.desc()).paginate(page=page, per_page=<span class="number">5</span>, error_out=<span class="literal">False</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> posts.iter_pages(right_current=<span class="number">2</span>):</span><br><span class="line">    <span class="built_in">print</span>(i)</span><br><span class="line"><span class="comment"># 1, 2, None, 10, 11, 12, 13, 14, None, 20, 21</span></span><br><span class="line"><span class="comment"># left_edge = 2         -&gt; 1, </span></span><br><span class="line"><span class="comment"># left_current = 2      -&gt; 10, 11</span></span><br><span class="line"><span class="comment"># right_edge = 2        -&gt; 13, 14</span></span><br><span class="line"><span class="comment"># right_current = 2     -&gt; 20, 21</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改<code>index.html</code>，修改<code>for()</code></p>
+ <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- blog/templates/index.html --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 略... --&gt;</span></span><br><span class="line">&#123;% for i in posts.iter_pages(right_current=2) %&#125;</span><br><span class="line">    <span class="comment">&lt;!-- 判斷 i =? None --&gt;</span></span><br><span class="line">    &#123;% if i %&#125;</span><br><span class="line">        <span class="comment">&lt;!-- 當前頁面使用&#x27;disabled&#x27; class --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;page-item &#123;% if page == i %&#125;disabled&#123;% endif %&#125;&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;page-link&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;blog.index&#x27;, page=i) &#125;&#125;&quot;</span>&gt;</span>&#123;&#123; i &#125;&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    &#123;% else %&#125;</span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;page-item&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;page-link&quot;</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span>...<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><img src="/imgs/pythonFlask/flask-7/pagination_3.png" alt="Pagination version 2.0 of index"></p>
+<p>修改完後看起來沒有問題，我們也完成自己的Blog。<br>而且Flask系列也差不多到一個階段 ✌🏻，之後有補充也會新增 🤓。<br><strong>Python Flask 概念與實作</strong>系列結束後發現Flask真的是容易上手，而且也是一個打好基礎🚧的Web Framework </p>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><ul>
+<li><input checked="" disabled="" type="checkbox"> 部落格文章’新增’, ‘修改’, ‘刪除’功能</li>
+<li><input checked="" disabled="" type="checkbox"> Pagination(頁籤)</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/flask/" rel="tag"># flask</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Python/Flask/flask/flask-6/" rel="prev" title="Python Flask 概念與實作(六) - 登入功能">
+                  <i class="fa fa-chevron-left"></i> Python Flask 概念與實作(六) - 登入功能
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Python/Django/django/django-0/" rel="next" title="Python Django 概念與實作 - 佈置環境">
+                  Python Django 概念與實作 - 佈置環境 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Muchian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>總字數：</span>
+    <span title="總字數">131k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"mcdaily","count":false,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

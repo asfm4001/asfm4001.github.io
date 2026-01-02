@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"asfm4001.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="種類 : linked list難度 : medium題目 : 707. Design Linked List">
+<meta property="og:type" content="article">
+<meta property="og:title" content="707. Design Linked List">
+<meta property="og:url" content="https://asfm4001.github.io/LeetCode/Medium/leetcode/707-DesignLinkedList/">
+<meta property="og:site_name" content="MC">
+<meta property="og:description" content="種類 : linked list難度 : medium題目 : 707. Design Linked List">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2025-12-26T06:17:21.000Z">
+<meta property="article:modified_time" content="2025-12-26T09:13:38.572Z">
+<meta property="article:author" content="Muchian">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="LeetCode">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://asfm4001.github.io/LeetCode/Medium/leetcode/707-DesignLinkedList/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/LeetCode/Medium/leetcode/707-DesignLinkedList/","path":"LeetCode/Medium/leetcode/707-DesignLinkedList/","title":"707. Design Linked List"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>707. Design Linked List | MC</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MC</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E7%B6%AD%E9%82%8F%E8%BC%AF"><span class="nav-number">1.</span> <span class="nav-text">思維邏輯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">解法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%A3%E9%BB%9E"><span class="nav-number">3.</span> <span class="nav-text">難點</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E8%A7%A3%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">最佳解法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Muchian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">標籤</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/asfm4001" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;asfm4001" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="回到頂端">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://asfm4001.github.io/LeetCode/Medium/leetcode/707-DesignLinkedList/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Muchian">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="707. Design Linked List | MC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          707. Design Linked List
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2025-12-26 14:17:21 / 修改時間：17:13:38" itemprop="dateCreated datePublished" datetime="2025-12-26T14:17:21+08:00">2025-12-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LeetCode/Medium/" itemprop="url" rel="index"><span itemprop="name">Medium</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="文章字數">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">文章字數：</span>
+      <span>4.9k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>種類 : linked list<br>難度 : medium<br>題目 : <a target="_blank" rel="noopener" href="https://leetcode.com/problems/design-linked-list/description/">707. Design Linked List</a></p>
+<span id="more"></span>
+<h3 id="思維邏輯"><a href="#思維邏輯" class="headerlink" title="思維邏輯"></a>思維邏輯</h3><ol>
+<li>addAtHead: 新增node，並重新定義head</li>
+<li>addAtTail: 歷便ListNode，在尾端加入node</li>
+<li>addAtIndex: 驗證index，cur.next &#x3D; new_node，new_node.next&#x3D;cur.next</li>
+<li>get: 驗證index，依index控制次數</li>
+<li>deleteAtIndex: 驗證index，依index控制次數，cur.next &#x3D; cur.next.next</li>
+</ol>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ListNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, val=<span class="number">0</span>, <span class="built_in">next</span>=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.val = val</span><br><span class="line">        <span class="variable language_">self</span>.<span class="built_in">next</span> = <span class="built_in">next</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyLinkedList</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.dummy_head = ListNode()</span><br><span class="line">        <span class="variable language_">self</span>.size = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, index: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="comment"># 進入迴圈時，從 0, 1, ..., i-1</span></span><br><span class="line">        <span class="comment"># 錯誤: if index &lt; 0 or index &gt; self.size:</span></span><br><span class="line">        <span class="keyword">if</span> index &lt; <span class="number">0</span> <span class="keyword">or</span> index &gt;= <span class="variable language_">self</span>.size:</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        <span class="comment"># dummy_head.next才是&quot;真正&quot;的head</span></span><br><span class="line">        <span class="comment"># 錯誤: cur = self.dummy_head.next</span></span><br><span class="line">        cur = <span class="variable language_">self</span>.dummy_head.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(index):</span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> cur.val</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addAtHead</span>(<span class="params">self, val: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="comment"># dummy_head僅作為 指向第一個node 功能</span></span><br><span class="line">        <span class="comment"># 錯誤: self.dummy_head = ListNode(val, self.dummy_head)</span></span><br><span class="line">        <span class="variable language_">self</span>.dummy_head.<span class="built_in">next</span> = ListNode(val, <span class="variable language_">self</span>.dummy_head.<span class="built_in">next</span>)</span><br><span class="line">        <span class="variable language_">self</span>.size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addAtTail</span>(<span class="params">self, val: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        cur = <span class="variable language_">self</span>.dummy_head</span><br><span class="line">        <span class="keyword">while</span> cur.<span class="built_in">next</span>:</span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br><span class="line">        cur.<span class="built_in">next</span> = ListNode(val)</span><br><span class="line">        <span class="variable language_">self</span>.size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addAtIndex</span>(<span class="params">self, index: <span class="built_in">int</span>, val: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">if</span> index &lt; <span class="number">0</span> <span class="keyword">or</span> index &gt;= <span class="variable language_">self</span>.size:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        cur = <span class="variable language_">self</span>.dummy_head</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(index):</span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br><span class="line">        cur.<span class="built_in">next</span> = ListNode(val, cur.<span class="built_in">next</span>)</span><br><span class="line">        <span class="variable language_">self</span>.size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">deleteAtIndex</span>(<span class="params">self, index: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">if</span> index &lt; <span class="number">0</span> <span class="keyword">or</span> index &gt;= <span class="variable language_">self</span>.size:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        cur = <span class="variable language_">self</span>.dummy_head</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(index):</span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br><span class="line">        cur.<span class="built_in">next</span> = cur.<span class="built_in">next</span>.<span class="built_in">next</span></span><br><span class="line">        <span class="variable language_">self</span>.size -= <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>時間複雜度: O(n)<br>空間複雜度: O(1)</p>
+<h3 id="難點"><a href="#難點" class="headerlink" title="難點"></a>難點</h3><ol>
+<li>定義LinkedList時加入size屬性，便於驗證index</li>
+<li>dummy_head的作用是指向<strong>真正</strong>head，便於在迴圈中存取val屬性。因此使用時需使用<code>cur = self.dummy_head.next</code>、定義時需使用<code>self.dummy_head.next = ListNode(val, self.dummy_head.next)</code></li>
+</ol>
+<h3 id="最佳解法"><a href="#最佳解法" class="headerlink" title="最佳解法"></a>最佳解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># singly linked list</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">使用addAtIndex取代: addAtHead, addAtTail</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ListNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, val</span>):</span><br><span class="line">        <span class="variable language_">self</span>.val = val</span><br><span class="line">        <span class="variable language_">self</span>.<span class="built_in">next</span> = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyLinkedList</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># Initialize your data structure here.</span></span><br><span class="line">        <span class="variable language_">self</span>.head = <span class="literal">None</span></span><br><span class="line">        <span class="variable language_">self</span>.size = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, index: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="comment"># Get the value of the index-th node in the linked list. If the index is invalid, return -1.</span></span><br><span class="line">        <span class="keyword">if</span> index &lt; <span class="number">0</span> <span class="keyword">or</span> index &gt;= <span class="variable language_">self</span>.size:</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line"></span><br><span class="line">        current = <span class="variable language_">self</span>.head</span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, index):</span><br><span class="line">            current = current.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> current.val</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addAtHead</span>(<span class="params">self, val: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="variable language_">self</span>.addAtIndex(<span class="number">0</span>, val)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addAtTail</span>(<span class="params">self, val: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="variable language_">self</span>.addAtIndex(<span class="variable language_">self</span>.size, val)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addAtIndex</span>(<span class="params">self, index: <span class="built_in">int</span>, val: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Add a node of value val before the index-th node in the linked list. If index equals to the length of linked</span></span><br><span class="line"><span class="string">        list, the node will be appended to the end of linked list. If index is greater than the length, the node will not</span></span><br><span class="line"><span class="string">        be inserted.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> index &gt; <span class="variable language_">self</span>.size:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        current = <span class="variable language_">self</span>.head</span><br><span class="line">        new_node = ListNode(val)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> index &lt;= <span class="number">0</span>:</span><br><span class="line">            new_node.<span class="built_in">next</span> = current</span><br><span class="line">            <span class="variable language_">self</span>.head = new_node</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(index - <span class="number">1</span>):</span><br><span class="line">                current = current.<span class="built_in">next</span></span><br><span class="line">            new_node.<span class="built_in">next</span> = current.<span class="built_in">next</span></span><br><span class="line">            current.<span class="built_in">next</span> = new_node</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">self</span>.size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">deleteAtIndex</span>(<span class="params">self, index: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="comment"># Delete the index-th node in the linked list, if the index is valid.</span></span><br><span class="line">        <span class="keyword">if</span> index &lt; <span class="number">0</span> <span class="keyword">or</span> index &gt;= <span class="variable language_">self</span>.size:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        current = <span class="variable language_">self</span>.head</span><br><span class="line">        <span class="keyword">if</span> index == <span class="number">0</span>:</span><br><span class="line">            <span class="variable language_">self</span>.head = <span class="variable language_">self</span>.head.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, index - <span class="number">1</span>):</span><br><span class="line">                current = current.<span class="built_in">next</span></span><br><span class="line">            current.<span class="built_in">next</span> = current.<span class="built_in">next</span>.<span class="built_in">next</span></span><br><span class="line">        <span class="variable language_">self</span>.size -= <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># doubly linked list</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ListNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, val=<span class="number">0</span>, prev=<span class="literal">None</span>, <span class="built_in">next</span>=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.val = val</span><br><span class="line">        <span class="variable language_">self</span>.prev = prev</span><br><span class="line">        <span class="variable language_">self</span>.<span class="built_in">next</span> = <span class="built_in">next</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyLinkedList</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.head = <span class="literal">None</span></span><br><span class="line">        <span class="variable language_">self</span>.tail = <span class="literal">None</span></span><br><span class="line">        <span class="variable language_">self</span>.size = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, index: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">if</span> index &lt; <span class="number">0</span> <span class="keyword">or</span> index &gt;= <span class="variable language_">self</span>.size:</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> index &lt; <span class="variable language_">self</span>.size // <span class="number">2</span>:</span><br><span class="line">            current = <span class="variable language_">self</span>.head</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(index):</span><br><span class="line">                current = current.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            current = <span class="variable language_">self</span>.tail</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="variable language_">self</span>.size - index - <span class="number">1</span>):</span><br><span class="line">                current = current.prev</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> current.val</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addAtHead</span>(<span class="params">self, val: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        new_node = ListNode(val, <span class="literal">None</span>, <span class="variable language_">self</span>.head)</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.head:</span><br><span class="line">            <span class="variable language_">self</span>.head.prev = new_node</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="variable language_">self</span>.tail = new_node</span><br><span class="line">        <span class="variable language_">self</span>.head = new_node</span><br><span class="line">        <span class="variable language_">self</span>.size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addAtTail</span>(<span class="params">self, val: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        new_node = ListNode(val, <span class="variable language_">self</span>.tail, <span class="literal">None</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.tail:</span><br><span class="line">            <span class="variable language_">self</span>.tail.<span class="built_in">next</span> = new_node</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="variable language_">self</span>.head = new_node</span><br><span class="line">        <span class="variable language_">self</span>.tail = new_node</span><br><span class="line">        <span class="variable language_">self</span>.size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addAtIndex</span>(<span class="params">self, index: <span class="built_in">int</span>, val: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">if</span> index &lt; <span class="number">0</span> <span class="keyword">or</span> index &gt; <span class="variable language_">self</span>.size:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> index == <span class="number">0</span>:</span><br><span class="line">            <span class="variable language_">self</span>.addAtHead(val)</span><br><span class="line">        <span class="keyword">elif</span> index == <span class="variable language_">self</span>.size:</span><br><span class="line">            <span class="variable language_">self</span>.addAtTail(val)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> index &lt; <span class="variable language_">self</span>.size // <span class="number">2</span>:</span><br><span class="line">                current = <span class="variable language_">self</span>.head</span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(index - <span class="number">1</span>):</span><br><span class="line">                    current = current.<span class="built_in">next</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                current = <span class="variable language_">self</span>.tail</span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="variable language_">self</span>.size - index):</span><br><span class="line">                    current = current.prev</span><br><span class="line">            new_node = ListNode(val, current, current.<span class="built_in">next</span>)</span><br><span class="line">            current.<span class="built_in">next</span>.prev = new_node</span><br><span class="line">            current.<span class="built_in">next</span> = new_node</span><br><span class="line">            <span class="variable language_">self</span>.size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">deleteAtIndex</span>(<span class="params">self, index: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">if</span> index &lt; <span class="number">0</span> <span class="keyword">or</span> index &gt;= <span class="variable language_">self</span>.size:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> index == <span class="number">0</span>:</span><br><span class="line">            <span class="variable language_">self</span>.head = <span class="variable language_">self</span>.head.<span class="built_in">next</span></span><br><span class="line">            <span class="keyword">if</span> <span class="variable language_">self</span>.head:</span><br><span class="line">                <span class="variable language_">self</span>.head.prev = <span class="literal">None</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="variable language_">self</span>.tail = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">elif</span> index == <span class="variable language_">self</span>.size - <span class="number">1</span>:</span><br><span class="line">            <span class="variable language_">self</span>.tail = <span class="variable language_">self</span>.tail.prev</span><br><span class="line">            <span class="keyword">if</span> <span class="variable language_">self</span>.tail:</span><br><span class="line">                <span class="variable language_">self</span>.tail.<span class="built_in">next</span> = <span class="literal">None</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="variable language_">self</span>.head = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> index &lt; <span class="variable language_">self</span>.size // <span class="number">2</span>:</span><br><span class="line">                current = <span class="variable language_">self</span>.head</span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(index):</span><br><span class="line">                    current = current.<span class="built_in">next</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                current = <span class="variable language_">self</span>.tail</span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="variable language_">self</span>.size - index - <span class="number">1</span>):</span><br><span class="line">                    current = current.prev</span><br><span class="line">            current.prev.<span class="built_in">next</span> = current.<span class="built_in">next</span></span><br><span class="line">            current.<span class="built_in">next</span>.prev = current.prev</span><br><span class="line">        <span class="variable language_">self</span>.size -= <span class="number">1</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Python/Django/django/django-2/" rel="prev" title="Python Django 概念與實作 - Django Model(二)">
+                  <i class="fa fa-chevron-left"></i> Python Django 概念與實作 - Django Model(二)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/LeetCode/Easy/leetcode/206-ReverseLinkedList/" rel="next" title="206. Reverse Linked List">
+                  206. Reverse Linked List <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Muchian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>總字數：</span>
+    <span title="總字數">131k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"mcdaily","count":false,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

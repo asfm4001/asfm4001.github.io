@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"asfm4001.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言目前小型以上的網站均會使用到資料庫，這節來介紹Django如何透過ORM的方式存取資料庫。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python Django 概念與實作 - Django Model(二)">
+<meta property="og:url" content="https://asfm4001.github.io/Python/Django/django/django-2/">
+<meta property="og:site_name" content="MC">
+<meta property="og:description" content="前言目前小型以上的網站均會使用到資料庫，這節來介紹Django如何透過ORM的方式存取資料庫。">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2025-10-07T11:21:02.000Z">
+<meta property="article:modified_time" content="2025-10-27T03:44:59.909Z">
+<meta property="article:author" content="Muchian">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="django">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://asfm4001.github.io/Python/Django/django/django-2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://asfm4001.github.io/Python/Django/django/django-2/","path":"Python/Django/django/django-2/","title":"Python Django 概念與實作 - Django Model(二)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python Django 概念與實作 - Django Model(二) | MC</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MC</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-Relational-Mapping-ORM"><span class="nav-number">2.</span> <span class="nav-text">Object Relational Mapping, ORM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SQLite"><span class="nav-number">2.1.</span> <span class="nav-text">SQLite</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Model"><span class="nav-number">2.2.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Migration"><span class="nav-number">2.3.</span> <span class="nav-text">Migration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#QuerySet"><span class="nav-number">2.4.</span> <span class="nav-text">QuerySet</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVT"><span class="nav-number">3.</span> <span class="nav-text">MVT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">4.</span> <span class="nav-text">結論</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Muchian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">標籤</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/asfm4001" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;asfm4001" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="回到頂端">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://asfm4001.github.io/Python/Django/django/django-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Muchian">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python Django 概念與實作 - Django Model(二) | MC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python Django 概念與實作 - Django Model(二)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-10-07 19:21:02" itemprop="dateCreated datePublished" datetime="2025-10-07T19:21:02+08:00">2025-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-10-27 11:44:59" itemprop="dateModified" datetime="2025-10-27T11:44:59+08:00">2025-10-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="文章字數">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">文章字數：</span>
+      <span>7.6k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>目前小型以上的網站均會使用到資料庫，這節來介紹Django如何透過ORM的方式存取資料庫。</p>
+<span id="more"></span>
+
+<p>目前 <em><strong>Python Django 概念與實作</strong></em> 大致規劃為</p>
+<ol>
+<li><a href="https://asfm4001.github.io/Python/Django/django/django-0/">佈置環境</a></li>
+<li><a href="https://asfm4001.github.io/Python/Django/django/django-1/">Django View(一)</a></li>
+<li>Django Model(二)</li>
+<li><a href="https://asfm4001.github.io/Python/Django/django/django-3/">Django Test(三)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Django/django/django-3/">Django Forms(四)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Django/django/django-5/">Django Admin(五)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Django/django/django-6/">登入功能(六)</a></li>
+<li><a href="https://asfm4001.github.io/Python/Django/django/django-7/">Blog功能(七)</a></li>
+</ol>
+<h3 id="Object-Relational-Mapping-ORM"><a href="#Object-Relational-Mapping-ORM" class="headerlink" title="Object Relational Mapping, ORM"></a>Object Relational Mapping, ORM</h3><p>一般來說，要存取資料庫通常會使用Structured Query Language, SQL來存取資料，類似<code>SELECT * FROM order;</code>這樣的語法。直接下SQL也不是不行，但大家仍會使用ORM作為操作資料庫的方式，雖然會消耗一些效能，但因有容易維護、跨不同資料庫、免於SQL Injection Attacks等優點，整體來說優點仍大於缺點。<br>ORM簡單來說是<b>將資料庫不同的table定義成不同model，透過python操控已定義model來控制databse</b>。</p>
+<h4 id="SQLite"><a href="#SQLite" class="headerlink" title="SQLite"></a>SQLite</h4><p>要儲存資料庫必須要有一個database server, DB server(資料庫伺服器)來儲存data，常見的RDBMS(關聯式資料管理系統)有MySQL, PostgreSQL等，亦有非關聯式，但不在我們今天討論的範圍當中。<br>Django內建輕量級別的database(資料庫): SQLite，讓我們在學習、開發時免於架設額外DB server。<code>settings.py</code>中可設定資料庫連線與儲存位置，這裡我們用default就好。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># settings.py</span></span><br><span class="line"><span class="comment"># 略...</span></span><br><span class="line"></span><br><span class="line">DATABASES = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;ENGINE&#x27;</span>: <span class="string">&#x27;django.db.backends.sqlite3&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;NAME&#x27;</span>: BASE_DIR / <span class="string">&#x27;db.sqlite3&#x27;</span>,  <span class="comment"># 資料儲存位置</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h4><p>首先我們先來定義我們的model(模型)，以<u>商品</u>來說，最少會有以下三個欄位</p>
+<ul>
+<li>商品名稱</li>
+<li>商品敘述</li>
+<li>價錢</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># orders/models.py</span></span><br><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Product</span>(models.Model):</span><br><span class="line">    name = models.CharField(max_length=<span class="number">20</span>)         <span class="comment"># 長度上限為20</span></span><br><span class="line">    description = models.TextField(max_length=<span class="number">100</span>) <span class="comment"># 長度上限為100</span></span><br><span class="line">    price = models.DecimalField(max_digits=<span class="number">6</span>, decimal_places=<span class="number">2</span>, default=<span class="number">0</span>)</span><br><span class="line">      <span class="comment"># 總位數為6, 小數位為2, 預設為0</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">         <span class="keyword">return</span> <span class="variable language_">self</span>.name</span><br></pre></td></tr></table></figure>
+
+<p>每一個欄位也對應不同的屬性，可以依照實際狀況使用<code>models.Model</code>下的不同Field。<br>例如: </p>
+<ul>
+<li>商品是否顯示: <code>BooleanField</code></li>
+<li>商品數量: <code>IntegerField</code></li>
+<li>異動日期: <code>DateField</code></li>
+<li>異動時間: <code>TimeField</code></li>
+</ul>
+<blockquote>
+<p><strong>Tips</strong><br>Decimal這種資料型態是用作固定精準度，若使用Float有可能導致0.1+0.2&#x3D;0.3…1的狀況發生。<br>DecimalField中，max_digits(最大總位數)與decimal_places(小數位數)為必填的參數<br>e.g. price &#x3D; 9999.99 則設定<code>max_digits=6, decimal_places=2</code></p>
+</blockquote>
+<h4 id="Migration"><a href="#Migration" class="headerlink" title="Migration"></a>Migration</h4><p>模型完成後，要將DB對應的欄位設定轉成與模型一致，這一步驟我們稱作<u>資料遷移</u>。<br>而我們不必逐一調整DB資料型態，django可先將模型轉為資料遷移腳本，接著執行腳本就可成功調整資料型態。</p>
+<blockquote>
+<p><strong>Tips</strong><br>Migration雖然稱作<b><i>資料庫遷移</i></b>，但並不是將A資料移至B位置，而是讓DB server知道每一個欄位的性質與大小。e.g. <code>name</code>(名字)這個欄位是儲存字串且通常不會太大，而<code>item_num</code>(物品數量)則是正整數，設為Integer較恰當。  </p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python manger.py makemigrations order # 生成遷移腳本</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Migrations <span class="keyword">for</span> <span class="string">&#x27;orders&#x27;</span>:</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">  orders/migrations/0001_initial.py</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">    + Create model Product</span></span><br></pre></td></tr></table></figure>
+
+<p>此時可以查看app下會產生遷移腳本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">orders/</span><br><span class="line">├── __init__.py</span><br><span class="line">├── admin.py</span><br><span class="line">├── apps.py</span><br><span class="line">├── models.py</span><br><span class="line">├── views.py</span><br><span class="line">└── migrations</span><br><span class="line">    ├── __init__.py</span><br><span class="line">    └── 0001_initial.py # 資料遷移腳本</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 0001_initial.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Migration</span>(migrations.Migration):</span><br><span class="line"></span><br><span class="line">    initial = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    dependencies = [</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    operations = [</span><br><span class="line">        migrations.CreateModel(</span><br><span class="line">            name=<span class="string">&#x27;Product&#x27;</span>,</span><br><span class="line">            fields=[</span><br><span class="line">                (<span class="string">&#x27;id&#x27;</span>, models.BigAutoField(auto_created=<span class="literal">True</span>, primary_key=<span class="literal">True</span>, serialize=<span class="literal">False</span>, verbose_name=<span class="string">&#x27;ID&#x27;</span>)),</span><br><span class="line">                (<span class="string">&#x27;name&#x27;</span>, models.CharField(max_length=<span class="number">20</span>)),</span><br><span class="line">                (<span class="string">&#x27;description&#x27;</span>, models.TextField(max_length=<span class="number">100</span>)),</span><br><span class="line">                (<span class="string">&#x27;price&#x27;</span>, models.DecimalField(decimal_places=<span class="number">2</span>, default=<span class="number">0</span>, max_digits=<span class="number">6</span>)),</span><br><span class="line">            ],</span><br><span class="line">        ),</span><br><span class="line">    ]</span><br></pre></td></tr></table></figure>
+<p>執行<code>migrate</code>即可執行腳本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python manage.py migrate</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Operations to perform:</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">  Apply all migrations: account, admin, auth, contenttypes, news, orders, portfolio, sessions, sites, socialaccount</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Running migrations:</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">  Applying orders.0001_initial... OK</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>Notices</strong><br>‼️ 只要資料型態有異動(無論是長度修改、新增&#x2F;刪除欄位)，均須重新產生新的腳本，並執行資料庫遷移。否則會造成資料庫存取失敗的問題產生</p>
+</blockquote>
+<h4 id="QuerySet"><a href="#QuerySet" class="headerlink" title="QuerySet"></a>QuerySet</h4><p>模型、資料庫都ok後，可以正式使用ORM操作DB🎉<br>使用django內建互動式shell，直接操作model來控制DB<br>執行以下程式開啟互動式shell(<kbd>ctrl</kbd>+<kbd>D</kbd>可中斷)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manger.py shell</span><br></pre></td></tr></table></figure>
+<p>透過控制model來CRUD(新增、讀取、修改、刪除)資料</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Cmd click to launch VS Code Native REPL</span></span><br><span class="line"><span class="comment"># Python 3.10.0 (v3.10.0:b494f5935c, Oct  4 2021, 14:59:19) [Clang 12.0.5 (clang-1205.0.22.11)] on darwin</span></span><br><span class="line"><span class="comment"># Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span></span><br><span class="line"><span class="comment"># (InteractiveConsole)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 引入Product model</span></span><br><span class="line"><span class="keyword">from</span> order.models <span class="keyword">import</span> Product</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查詢Prdouct內的data(未建立data時是空的)</span></span><br><span class="line">Product.objects.<span class="built_in">all</span>() <span class="comment"># &lt;QuerySet []&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 新增Product</span></span><br><span class="line">p1 = Product(name=<span class="string">&quot;cake&quot;</span>, description=<span class="string">&quot;This is a cake.&quot;</span>, price = <span class="number">50.0</span>)</span><br><span class="line"></span><br><span class="line">p1              <span class="comment"># &lt;Product: cake&gt;</span></span><br><span class="line">p1.name         <span class="comment"># &#x27;cake&#x27;</span></span><br><span class="line">p1.description  <span class="comment"># &#x27;This is a cake.&#x27;</span></span><br><span class="line">p1.price        <span class="comment"># 50.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 未儲存前仍是空的</span></span><br><span class="line">Product.objects.<span class="built_in">all</span>() <span class="comment"># &lt;QuerySet []&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 儲存後查詢</span></span><br><span class="line">p1.save()</span><br><span class="line">Product.objects.<span class="built_in">all</span>() <span class="comment"># &lt;QuerySet [&lt;Product: cake&gt;]&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改後仍須儲存</span></span><br><span class="line">p1.price = <span class="number">75.50</span></span><br><span class="line">p1.save()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 刪除時無需儲存</span></span><br><span class="line">p1.delete()           <span class="comment"># (1, &#123;&#x27;orders.Product&#x27;: 1&#125;)</span></span><br><span class="line">Product.objects.<span class="built_in">all</span>() <span class="comment"># &lt;QuerySet []&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>還有各種查詢方式</p>
+<ul>
+<li><code>.all</code>: 列出全部</li>
+<li><code>.filter</code>, <code>.exclude</code>: 包含篩選, 除外篩選<ul>
+<li>字串類<ul>
+<li><code>exact</code>: 精準比較</li>
+<li><code>iexact</code>: 鬆散比較(忽略大小寫)</li>
+<li><code>contains</code>: 包含字元</li>
+<li><code>icontains</code>: 包含字元(忽略大小寫)</li>
+<li><code>startswith</code>: 起始字元</li>
+<li><code>istartswith</code>: 起始字元(忽略大小寫)</li>
+<li><code>endswith</code>: 結尾字元</li>
+<li><code>iendswith</code>: 結尾字元(忽略大小寫)</li>
+</ul>
+</li>
+<li>邏輯類<ul>
+<li><code>gt</code>: 大於</li>
+<li><code>gte</code>: 大於等於</li>
+<li><code>lt</code>: 小於</li>
+<li><code>lte</code>: 小於等於</li>
+<li><code>in</code>: 在List中</li>
+<li><code>range</code>: 在範圍內</li>
+<li><code>isnull</code>: 為null</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>.order_by</code>: 排序</li>
+<li><code>.distinct</code>: 排除重複值</li>
+<li><code>.exists</code>: 是否存在, 返回<code>True</code>&#x2F;<code>False</code></li>
+<li><code>.get</code>: 取QuerySet內的物件, 返回<code>object</code>&#x2F;<code>DoesNotExcist</code><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">p1 = Product(name=<span class="string">&quot;cake&quot;</span>, description=<span class="string">&quot;This is a cake.&quot;</span>, price = <span class="number">50.0</span>)</span><br><span class="line">p1.save()</span><br><span class="line"></span><br><span class="line">p2 = Product(name=<span class="string">&quot;apple&quot;</span>, description=<span class="string">&quot;This is an apple.&quot;</span>, price = <span class="number">5.0</span>)</span><br><span class="line">p2.save()</span><br><span class="line"></span><br><span class="line">p3 = Product(name=<span class="string">&quot;apple i17&quot;</span>, description=<span class="string">&quot;This is a phone.&quot;</span>, price = <span class="number">999.99</span>)</span><br><span class="line">p3.save()</span><br><span class="line"></span><br><span class="line">Product.objects.<span class="built_in">all</span>() <span class="comment"># &lt;QuerySet [&lt;Product: cake&gt;, &lt;Product: apple&gt;, &lt;Product: apple i17&gt;]&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### filter(包含) &amp; exclude(排除) ###</span></span><br><span class="line"><span class="comment"># 精準比較</span></span><br><span class="line">Product.objects.<span class="built_in">filter</span>(name=<span class="string">&#x27;cake&#x27;</span>) <span class="comment"># &lt;QuerySet [&lt;Product: cake&gt;]&gt;</span></span><br><span class="line">Product.objects.<span class="built_in">filter</span>(name__exact=<span class="string">&#x27;cake&#x27;</span>) <span class="comment"># &lt;QuerySet [&lt;Product: cake&gt;]&gt;</span></span><br><span class="line"><span class="comment"># 包含字元</span></span><br><span class="line">Product.objects.<span class="built_in">filter</span>(name__contains=<span class="string">&#x27;apple&#x27;</span>) <span class="comment"># &lt;QuerySet [&lt;Product: apple&gt;], &lt;Product: apple i17&gt;]&gt;</span></span><br><span class="line"><span class="comment"># 起始字元</span></span><br><span class="line">Product.objects.<span class="built_in">filter</span>(name__startswith=<span class="string">&#x27;a&#x27;</span>) <span class="comment"># &lt;QuerySet [&lt;Product: apple&gt;], &lt;Product: apple i17&gt;]&gt;</span></span><br><span class="line"><span class="comment"># 多重篩選</span></span><br><span class="line">Product.objects.<span class="built_in">filter</span>(name__contains=<span class="string">&#x27;apple&#x27;</span>, price__gte=<span class="number">3</span>) <span class="comment"># &lt;QuerySet [&lt;Product: apple&gt;], &lt;Product: apple i17&gt;]&gt;</span></span><br><span class="line"><span class="comment"># 排除</span></span><br><span class="line">Product.objects.exclude(name=<span class="string">&#x27;cake&#x27;</span>) <span class="comment"># &lt;QuerySet [&lt;Product: apple&gt;], &lt;Product: apple i17&gt;]&gt;</span></span><br><span class="line"><span class="comment"># 排序(降序)</span></span><br><span class="line">Product.objects.order_by(<span class="string">&#x27;-price&#x27;</span>) <span class="comment"># &lt;QuerySet [&lt;Product: apple i17&gt;, &lt;Product: cake&gt;, &lt;Product: apple&gt;]&gt;</span></span><br><span class="line"><span class="comment"># OR</span></span><br><span class="line"><span class="keyword">from</span> django.db.models <span class="keyword">import</span> Q</span><br><span class="line">Product.objects.<span class="built_in">filter</span>(Q(name=<span class="string">&#x27;cake&#x27;</span>)|Q(name=<span class="string">&#x27;apple&#x27;</span>)) <span class="comment"># &lt;QuerySet [&lt;Product: cake&gt;, &lt;Product: apple&gt;]&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 限制篩選範圍</span></span><br><span class="line">Product.objects.<span class="built_in">all</span>()[<span class="number">0</span>:<span class="number">2</span>] <span class="comment"># &lt;QuerySet [&lt;Product: cake&gt;, &lt;Product: apple&gt;]&gt;</span></span><br><span class="line"><span class="comment"># 取QuerySet內物件</span></span><br><span class="line">Product.objects.<span class="built_in">all</span>()[<span class="number">0</span>] <span class="comment"># &lt;Product: cake&gt;</span></span><br><span class="line">Product.objects.<span class="built_in">all</span>()[<span class="number">3</span>:].get() <span class="comment"># 取值失敗時, 拋出&quot;DoesNotExist&quot; Error</span></span><br><span class="line"><span class="comment"># raise self.model.DoesNotExist(</span></span><br><span class="line"><span class="comment"># orders.models.DoesNotExist: Product matching query does not exist.</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="MVT"><a href="#MVT" class="headerlink" title="MVT"></a>MVT</h3><p>在<a href="https://asfm4001.github.io/Python/Django/django/django-1/">前一小節</a>有介紹MVT，這裡我們實作<code>/orders/products</code>顯示當前所有商品資訊</p>
+<ol>
+<li>修改<code>views.py</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># orders/views.py</span></span><br><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> render</span><br><span class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> Product</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">product</span>(<span class="params">request</span>):</span><br><span class="line">    products = Product.objects.<span class="built_in">all</span>()</span><br><span class="line">    <span class="comment"># 透過context傳至templates</span></span><br><span class="line">    context = &#123;</span><br><span class="line">        <span class="string">&#x27;products&#x27;</span>: products</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> render(request, <span class="string">&#x27;orders/product.html&#x27;</span>, context=context)</span><br></pre></td></tr></table></figure></li>
+<li>新增<code>templates/product.html</code>，並使用Jinja 2語法使用傳入的變數 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- orders/templates/product.html--&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 略... --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;row row-cols-1 row-cols-md-3&quot;</span>&gt;</span></span><br><span class="line">    &#123;% for product in products %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col mb-4&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card h-100&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">svg</span> <span class="attr">class</span>=<span class="string">&quot;bd-placeholder-img card-img-top&quot;</span> <span class="attr">width</span>=<span class="string">&quot;100%&quot;</span> <span class="attr">height</span>=<span class="string">&quot;180&quot;</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/2000/svg&quot;</span> <span class="attr">role</span>=<span class="string">&quot;img&quot;</span> <span class="attr">aria-label</span>=<span class="string">&quot;Placeholder: Image cap&quot;</span> <span class="attr">preserveAspectRatio</span>=<span class="string">&quot;xMidYMid slice&quot;</span> <span class="attr">focusable</span>=<span class="string">&quot;false&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">rect</span> <span class="attr">width</span>=<span class="string">&quot;100%&quot;</span> <span class="attr">height</span>=<span class="string">&quot;100%&quot;</span> <span class="attr">fill</span>=<span class="string">&quot;#6c757d&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">rect</span>&gt;</span><span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">&quot;40%&quot;</span> <span class="attr">y</span>=<span class="string">&quot;50%&quot;</span> <span class="attr">fill</span>=<span class="string">&quot;#dee2e6&quot;</span>&gt;</span>Image cap<span class="tag">&lt;/<span class="name">text</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card-body&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h5</span> <span class="attr">class</span>=<span class="string">&quot;card-title&quot;</span>&gt;</span>&#123;&#123; product.name &#125;&#125;<span class="tag">&lt;/<span class="name">h5</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">span</span>&gt;</span>$&#123;&#123; product.price &#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;card-text&quot;</span>&gt;</span>&#123;&#123; product.description &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    &#123;% endfor %&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>Tips</strong><br>關於Jinja 2語法的使用，可參考之前<a href="https://asfm4001.github.io/Python/Flask/flask/flask-5/#Jinja-2">Flask的文章</a></p>
+</blockquote>
+</li>
+<li>修改<code>urls.py</code><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># orders/urls.py</span></span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">app_name = <span class="string">&#x27;orders&#x27;</span></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&quot;product&quot;</span>, views.product, name=<span class="string">&quot;product&quot;</span>),</span><br><span class="line">]</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><ul>
+<li><input checked="" disabled="" type="checkbox"> 定義資料庫model與使用<code>models.Model</code>下不同的Field</li>
+<li><input checked="" disabled="" type="checkbox"> 資料庫遷移</li>
+<li><input checked="" disabled="" type="checkbox"> QuertSet的CRUD與不同篩選條件</li>
+<li><input checked="" disabled="" type="checkbox"> 在Django中實作ORM</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/django/" rel="tag"># django</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Python/Django/django/django-1/" rel="prev" title="Python Django 概念與實作 - Django View(一)">
+                  <i class="fa fa-chevron-left"></i> Python Django 概念與實作 - Django View(一)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/LeetCode/Medium/leetcode/707-DesignLinkedList/" rel="next" title="707. Design Linked List">
+                  707. Design Linked List <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Muchian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>總字數：</span>
+    <span title="總字數">131k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"mcdaily","count":false,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
